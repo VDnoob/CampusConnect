@@ -112,6 +112,18 @@ input#remember.remember {
     width: auto;
 }
 
+.remb {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.for-pa {
+    width: 100%;
+    text-align: right;
+    transform: translateY(-12px);
+    margin: 0 0 -5px;
+}
 .logo p {
     text-align: center;
     font-family: Perpetua;
