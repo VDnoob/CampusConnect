@@ -171,6 +171,19 @@ input#remember.remember {
     animation: show 0.6s;
 }
 
+.alt-s {
+    width: 90%;
+    text-align: center;
+    border-bottom: 1px solid #979faf;
+    line-height: 0.1em;
+    margin: 4px 0 4px;
+}
+
+.alt-s span {
+    background: #fff;
+    padding: 0 10px;
+}
+
 @keyframes show {
 
     0%,
