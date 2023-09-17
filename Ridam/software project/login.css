@@ -36,7 +36,7 @@ span {
 
 a {
     color: #333;
-    font-size: 14px;
+    font-size: 17px;
     text-decoration: none;
     margin: 15px 0;
 }
@@ -81,6 +81,7 @@ button:hover {
 a:hover {
     font-weight: 100;
     color: #46cbf8;
+    transition: all 0.15s ease-in;
 }
 
 button.ghost {
@@ -287,4 +288,11 @@ input#remember.remember {
     border-radius: 30px;
     background-color: transparent;
     /* padding-left: 0%; */
+}
+.fa-google-plus-g {
+    background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
 }
