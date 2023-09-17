@@ -8,7 +8,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-family: 'Book Antiqua', sans-serif;
+    font-family: 'Poppins', sans-serif;
     height: 100vh;
     margin: -2px 0 0px;
 }
@@ -134,7 +134,7 @@ input#remember.remember {
         0 10px 10px rgba(0, 0, 0, 0.22);
     position: relative;
     overflow: hidden;
-    width: 1000px;
+    width: 1100px;
     height: 90%;
     max-width: 100%;
     min-height: 480px;
@@ -227,7 +227,7 @@ input#remember.remember {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 40px;
+    padding: 0 0;
     text-align: center;
     top: 0;
     height: 100%;
@@ -285,11 +285,11 @@ input#remember.remember {
 .ex img {
     opacity: 0.1;
     margin-bottom: 20px;
-    border-radius: 30px;
+    border-radius: 3px;
     background-color: transparent;
     /* padding-left: 0%; */
 }
-.fa-google-plus-g {
+.fa-google {
     background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
     -webkit-background-clip: text;
     background-clip: text;
