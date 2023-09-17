@@ -188,7 +188,7 @@ input#remember.remember {
     text-align: center;
     border-bottom: 1px solid #979faf;
     line-height: 0em;
-    margin: 4px 0 4px;
+    margin: 20px 0 20px;
 }
 
 .alt-s span {
@@ -279,7 +279,7 @@ input#remember.remember {
 }
 
 .social-container {
-    margin: 5px 0;
+    margin: 10px 0 0 0;
 }
 
 .social-container a {
