@@ -227,7 +227,7 @@ input#remember.remember {
 }
 
 .overlay {
-    background: #46cbf8;
+    background: #6CB4EE;
     background: -webkit-linear-gradient(to right, #46c6f4, #4ceef9, );
     background: linear-gradient(to right, #54d1ea, #46cfbd, );
     background-repeat: no-repeat;
@@ -309,7 +309,7 @@ input#remember.remember {
 
 .ex img {
     opacity: 0.1;
-    margin-bottom: 20px;
+    margin-top: 5px;
     border-radius: 3px;
     background-color: transparent;
     /* padding-left: 0%; */
