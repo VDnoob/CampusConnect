@@ -118,12 +118,48 @@ input#remember.remember {
     margin-bottom: 0;
 }
 
+.con {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
 .for-pa {
     width: 100%;
+    display: flex;
     text-align: right;
-    transform: translateY(-12px);
-    margin: 0 0 -5px;
+    justify-content: center;
+    flex-direction: column;
 }
+
+.for-pa a {
+    margin: 0;
+}
+
+@media only screen and (max-width: 500px) {
+    .con {
+        flex-direction: column;
+    }
+
+    .for-pa a {
+        font-size: 0.7em;
+    }
+
+    .remb label {
+        font-size: 0.7em;
+    }
+}
+
+@media only screen and (max-width: 745px) {
+    .for-pa a {
+        font-size: 0.9em;
+    }
+
+    .remb label {
+        font-size: 0.9em;
+    }
+}
+
 .logo p {
     text-align: center;
     font-family: Perpetua;
