@@ -9,5 +9,5 @@ Week - 1 (20-8 to 27-8):
 Week - 2
 
 --> We Worked on the frontend development of the login/register page.
-    To preview [click here](https://htmlpreview.github.io/?https://github.com/VDnoob/CampusConnect/blob/main/Ridam/software%20project/login.html)
+    To preview [click here](https://htmlpreview.github.io/?https://github.com/VDnoob/CampusConnect/blob/login-page/Ridam/software%20project/login.html)
     
