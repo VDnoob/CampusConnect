@@ -28,7 +28,7 @@ Week - 2 :
 
 Week - 3 :
 
---> In this week, We made concept map for 5 Important key topics of our project. In this part, the major contributions are made by Jeel Viradiya, Ridam Chhapia, Arth Shah, Maitri Patel, Mihir Raj. Other members also gave suggestions and we also explained how and why did wo do that for everything.
+--> In this week, We made concept map for 5 Important key topics of our project. In this part, the major contributions are made by Jeel Viradiya, Ridam Chhapia, Arth Shah, Maitri Patel, Mihir Raj. Other members also gave suggestions and we also explained how and why did we do that for everything.
 
 Week - 4:
 
