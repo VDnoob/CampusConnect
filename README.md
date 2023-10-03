@@ -20,9 +20,9 @@ Figma : [view](https://www.figma.com/file/slOMupEQtgoQrPb0Y9y829/Arth%2FDhruv%2F
 
 Week - 2 :
 
---> We worked On Use Cases this time. There are total 5 use cases representing diffenrent scenarios. We have just thoght of some major generally used Use Cases here for the sake of simplicity. Here, Jeel Viradiya, Ridam Chhapiya, Maitri Patel contributed in UC 1-2. Krish Prajapati and Mihir Raj contributed in UC 3. Arth shah , Dhruv Parikh contributed in UC 4. Pratham Lokhande and Jayveer Rathwa contributed in UC 5.
+--> We worked On Use Cases this time. There are total 5 use cases representing diffenrent scenarios. We have just thoght of some major generally used Use Cases here for the sake of simplicity. Here, Jeel Viradiya, Ridam Chhapiya, Maitri Patel contributed in UC 1-2. Krish Prajapati and Mihir Raj contributed in UC 3. Arth shah , Dhruv Parekh contributed in UC 4. Pratham Lokhande and Jayveer Rathwa contributed in UC 5.
 
---> We also worked on User Stories. In this part, again we focused more on quality rather than quantity. We wrote a total 8 user stories which we think will cover most of the requirements. In this part, Jeel Viradiya, Ridam Chhapiya, Maitri Patel contributed in US 1-3. Krish prajapati, Arth shah, Dhruv parikh contributed in US 4-6. Pratham Lokhande, Jayveer Rathwa, Mihir Raj contributed in US 7-8.
+--> We also worked on User Stories. In this part, again we focused more on quality rather than quantity. We wrote a total 8 user stories which we think will cover most of the requirements. In this part, Jeel Viradiya, Ridam Chhapiya, Maitri Patel contributed in US 1-3. Krish prajapati, Arth shah, Dhruv Parekh contributed in US 4-6. Pratham Lokhande, Jayveer Rathwa, Mihir Raj contributed in US 7-8.
 
 --> After all this work was done, we also meet for understanding each others' thoughtprocess behind their respective contributions.
 
@@ -46,7 +46,7 @@ Week - 5 :
 
 - Arth Shah
 - Krish Prajapati
-- Dhruv Parikh
+- Dhruv Parekh
 - Maitri Patel
 - Pratham Lokhande
 - Jayveer Rathwa
