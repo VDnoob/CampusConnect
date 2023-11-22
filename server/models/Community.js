@@ -49,6 +49,12 @@ const communitySchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  picture: {
+    type: String, // I am assuming the picture is stored as a URL kuki tune user ke profile picture me wahi kiya hai 
+  },
+  coverPage: {
+    type: String, // I am assuming the picture is stored as a URL kuki tune user ke profile picture me wahi kiya hai 
+  },
 });
 
 module.exports = mongoose.model("Community", communitySchema);

@@ -69,7 +69,7 @@ exports.createCommunity = async (req, res) => {
 
 exports.updateCommunity = async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, description} = req.body; // picture, coverPage 
     const user = req.user.id;
 
     if (!name) {
@@ -113,6 +113,11 @@ exports.updateCommunity = async (req, res) => {
     // });
 
     if (description) communityExists.description = description;
+    
+    /*
+    if (picture) communityExists.picture = picture; i think this should work clearly
+    if (coverPage) communityExists.coverPage = coverPage; 
+    */
 
     // if (tags.length > 0 && communityExists.tags) {
     //   communityExists.tags.forEach(async (tagName) => {
@@ -466,6 +471,115 @@ exports.removeModerator = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "User removed as moderator successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.updateCommunityPicture = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const user = req.user.id;
+    const picture = req.files.picture; // multer to use karu ne ?
+
+    if (!name || !picture) {
+      return res.status(400).json({
+        success: false,
+        message: "Required fields are missing",
+      });
+    }
+
+    let communityExists = await Community.findOne({ name });
+
+    if (!communityExists) {
+      return res.status(400).json({
+        success: false,
+        message: "Community not found",
+      });
+    }
+
+    if (
+      communityExists.createdBy.toString() !== user &&
+      !communityExists.moderators.includes(user)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "You are not authorized to update this community",
+      });
+    }
+
+    const image = await uploadToCloudinary(
+      picture,
+      process.env.FOLDER_NAME_COMMUNITY // Assuming to have a separate folder for community images
+    );
+
+    communityExists.picture = image.secure_url;
+    await communityExists.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Community picture updated successfully",
+      data: communityExists,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+exports.updateCommunityCoverPage = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const user = req.user.id;
+    const coverPage = req.files.coverPage; // ama bi multer use karu chu 
+
+    if (!name || !coverPage) {
+      return res.status(400).json({
+        success: false,
+        message: "Required fields are missing",
+      });
+    }
+
+    let communityExists = await Community.findOne({ name });
+
+    if (!communityExists) {
+      return res.status(400).json({
+        success: false,
+        message: "Community not found",
+      });
+    }
+
+    if (
+      communityExists.createdBy.toString() !== user &&
+      !communityExists.moderators.includes(user)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "You are not authorized to update this community",
+      });
+    }
+
+    const image = await uploadToCloudinary(
+      coverPage,
+      process.env.FOLDER_NAME_COMMUNITY // Assuming you have a separate folder for community images
+    );
+
+    communityExists.coverPage = image.secure_url;
+    await communityExists.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Community cover page updated successfully",
+      data: communityExists,
     });
   } catch (error) {
     console.log(error);
