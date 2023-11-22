@@ -1,6 +1,7 @@
 const Community = require("../models/Community");
 const Tag = require("../models/Tag");
 const User = require("../models/User");
+const uploadToCloudinary = require("../utils/uploadToCloudinary");
 
 exports.createCommunity = async (req, res) => {
   try {
@@ -69,7 +70,7 @@ exports.createCommunity = async (req, res) => {
 
 exports.updateCommunity = async (req, res) => {
   try {
-    const { name, description} = req.body; // picture, coverPage 
+    const { name, description } = req.body; // picture, coverPage
     const user = req.user.id;
 
     if (!name) {
@@ -113,7 +114,7 @@ exports.updateCommunity = async (req, res) => {
     // });
 
     if (description) communityExists.description = description;
-    
+
     /*
     if (picture) communityExists.picture = picture; i think this should work clearly
     if (coverPage) communityExists.coverPage = coverPage; 
@@ -535,12 +536,11 @@ exports.updateCommunityPicture = async (req, res) => {
   }
 };
 
-
 exports.updateCommunityCoverPage = async (req, res) => {
   try {
     const { name } = req.body;
     const user = req.user.id;
-    const coverPage = req.files.coverPage; // ama bi multer use karu chu 
+    const coverPage = req.files.coverPage; // ama bi multer use karu chu
 
     if (!name || !coverPage) {
       return res.status(400).json({

@@ -18,9 +18,9 @@ const {
 router.get("/getDetails", auth, getCommunityDetails);
 router.post("/create", auth, createCommunity);
 router.put("/update", auth, updateCommunity);
-// router.put("/update", auth, updateCommunity); // aa add karyu
-// router.put("/update/picture", auth, updateCommunityPicture); // aa add karyu
-// router.put("/update/coverpage", auth, updateCommunityCoverPage); // aa add karyu
+// router.put("/update", auth, updateCommunity); // aa add karyu 
+// router.put("/update/picture", auth, updateCommunityPicture); // aa add karyu 
+// router.put("/update/coverpage", auth, updateCommunityCoverPage); // aa add karyu 
 router.delete("/delete", auth, deleteCommunity);
 router.post("/addMember", auth, addMember);
 router.post("/removeMember", auth, removeMember);
@@ -29,5 +29,6 @@ router.post("/removeModerator", auth, removeModerator);
 
 router.put("/update/picture", auth, updateCommunityPicture);
 router.put("/update/coverpage", auth, updateCommunityCoverPage);
+
 
 module.exports = router;
