@@ -1,5 +1,6 @@
 const Answer = require("../models/Answer");
 const Doubt = require("../models/Doubt");
+const User = require("../models/User");
 
 exports.createAnswer = async (req, res) => {
   try {
@@ -128,6 +129,8 @@ exports.markCorrectAnswer = async (req, res) => {
   try {
     const { answerId } = req.body;
     const answer = await Answer.findById(answerId);
+    const doubt = await Doubt.findById(answer.doubt);
+    const user = await User.findById(answer.answeredBy);
 
     if (!answer) {
       return res.status(404).json({
@@ -136,7 +139,7 @@ exports.markCorrectAnswer = async (req, res) => {
       });
     }
 
-    if (answer.answeredBy.toString() !== req.user.id) {
+    if (doubt.createdBy.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
         message: "You are not authorized to mark this answer correct",
@@ -151,8 +154,10 @@ exports.markCorrectAnswer = async (req, res) => {
     }
 
     answer.isCorrectAnswer = true;
+    user.contribution = user.contribution + 1;
 
     await answer.save();
+    await user.save();
 
     res.status(200).json({
       success: true,
@@ -171,6 +176,8 @@ exports.unmarkCorrectAnswer = async (req, res) => {
   try {
     const { answerId } = req.body;
     const answer = await Answer.findById(answerId);
+    const doubt = await Doubt.findById(answer.doubt);
+    const user = await User.findById(answer.answeredBy);
 
     if (!answer) {
       return res.status(404).json({
@@ -179,7 +186,7 @@ exports.unmarkCorrectAnswer = async (req, res) => {
       });
     }
 
-    if (answer.answeredBy.toString() !== req.user.id) {
+    if (doubt.createdBy.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
         message: "You are not authorized to unmark this answer correct",
@@ -194,8 +201,10 @@ exports.unmarkCorrectAnswer = async (req, res) => {
     }
 
     answer.isCorrectAnswer = false;
+    user.contribution = user.contribution - 1;
 
     await answer.save();
+    await user.save();
 
     res.status(200).json({
       success: true,

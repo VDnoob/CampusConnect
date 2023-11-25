@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   accountType: {
     type: String,
     required: true,
-    enum: ["Admin", "Student", "Professor"],
+    enum: ["admin", "student", "professor"],
   },
   additionalDetails: {
     type: mongoose.Schema.Types.ObjectId,
@@ -37,6 +37,9 @@ const userSchema = new mongoose.Schema({
     },
   ],
   profilePicture: {
+    type: String,
+  },
+  coverPicture: {
     type: String,
   },
   token: {
@@ -57,6 +60,16 @@ const userSchema = new mongoose.Schema({
       ref: "Post",
     },
   ],
+  doubts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doubt",
+    },
+  ],
+  contribution: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
