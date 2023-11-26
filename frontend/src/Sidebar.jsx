@@ -6,19 +6,22 @@ import './Sidebar.css';
 import { Link } from "react-router-dom";
 
 function Sidebar() {
-    const [userData, setUserData] = useState({ name: '', email: '' });
+    const [userData, setUserData] = useState({ firstName: '', email: '' });
 
     useEffect(() => {
+        const token = localStorage.getItem("Token");
         const fetchData = async () => {
             try {
-                const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/auth/getUserEntireDetails', {
+                const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/getUserEntireDetails', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
                     },
                 });
 
                 const data = await response.json();
+                // console.log(data);
                 setUserData(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
