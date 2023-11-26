@@ -5,21 +5,18 @@ export default function ModeratorsList(){
         { 
             id: 4, 
             name: "Elon Musk", 
-            tag: "Owner", 
             bio: "Technology Architect: AWS Serverless, React Js, Node Js, AWS, S3, Dynamo DB, SES, SQS, Athena",
             imageUrl: 'https://cdn.businessinsider.de/wp-content/uploads/2019/06/elon-musk.jpg',
         },
         { 
             id: 5, 
             name: "Mark Zuckerberg", 
-            tag: "Manager", 
             bio: "Technology Architect: AWS Serverless, React Js, Node Js, AWS, S3, Dynamo DB, SES, SQS, Athena",
             imageUrl: 'https://api.time.com/wp-content/uploads/2016/01/ap_794116323555.jpg',
         },
         { 
             id: 6, 
             name: "Jeff Bezos", 
-            tag: "Owner", 
             bio: "Technology Architect: AWS Serverless, React Js, Node Js, AWS, S3, Dynamo DB, SES, SQS, Athena",
             imageUrl: 'https://www.channelnews.com.au/wp-content/uploads/2021/05/bezos.jpg',
         },
@@ -48,10 +45,6 @@ export default function ModeratorsList(){
                     >
                     {moderator.name} 
                     </Typography>
-                    <Chip 
-                        label={moderator.tag}
-                        className="ml-3 w-[100px]"    
-                    />
                     <Typography
                         variant="h7"
                         className="font-sans pl-4"
