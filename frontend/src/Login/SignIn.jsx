@@ -42,52 +42,46 @@ function SignInForm() {
         });
     };
 
-    const handleOnSubmit = async (evt) => {
+    const handleOnSubmit = (evt) => {
         evt.preventDefault();
         const { email, password, rememberMe } = state;
 
-        // Assuming you have an API call function for login
-        try {
-            // Make the API call to verify credentials
-            // Replace the following line with your actual API call
-            const response = await fetch("https://campusconnectbackend.onrender.com/api/v1/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
+        fetch("https://campusconnectbackend.onrender.com/api/v1/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Login failed");
+                }
             })
-                .then(response => response.json())
-                .then(data => {
-                    const token = data.token;
-                    // Now you can use the token as needed
-                    localStorage.setItem("Token", token);
-                    console.log(token);
+            .then(data => {
+                const token = data.token;
 
-                    // If "Remember Me" is checked, save credentials to local storage
-                    if (rememberMe) {
-                        localStorage.setItem("rememberedEmail", email);
-                        localStorage.setItem("rememberedPassword", password);
-                    }
-                    // console.log(response.json());
-                    // console.log(data.token);
+                // Now you can use the token as needed
+                localStorage.setItem("Token", token);
 
-                    // Redirect to the Home page
-                    Navigate("/Home");
+                // If "Remember Me" is checked, save credentials to local storage
+                if (rememberMe) {
+                    localStorage.setItem("rememberedEmail", email);
+                    localStorage.setItem("rememberedPassword", password);
+                }
 
-                    // You can also perform a GET request here if needed
-
-                })
-                .catch(error => {
-                    // Handle errors
-                    alert("Invalid credentials. Please try again.");
-                    console.error(error);
-                });
-            // Assuming the API returns a success status
-        } catch (error) {
-            console.error("Error during login:", error);
-        }
+                // Redirect to the Home page
+                Navigate("/Home");
+            })
+            .catch(error => {
+                // Handle errors
+                alert(`${error.message}: Invalid credentials. Please try again.`);
+                console.error(error);
+            });
     };
+
 
     return (
         <div className="form-container sign-in-container">
