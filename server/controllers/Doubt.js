@@ -26,6 +26,13 @@ exports.createDoubt = async (req, res) => {
 
     const community = await Community.findOne({ name: communityName });
 
+    if (!community) {
+      return res.status(404).json({
+        success: false,
+        message: "Community not found",
+      });
+    }
+
     let doubt = await Doubt.create({
       createdBy: userId,
       content,
@@ -56,8 +63,10 @@ exports.createDoubt = async (req, res) => {
     }
 
     community.doubts.push(doubt._id);
-    await community.save();
+    createdBy.doubts.push(doubt._id);
 
+    await community.save();
+    await createdBy.save();
     await doubtObj.save();
 
     res.status(200).json({
@@ -151,8 +160,13 @@ exports.deleteDoubt = async (req, res) => {
     }
 
     const community = await Community.findById(doubt.community);
+    const createdBy = await User.findById(req.user.id);
+
     await community.doubts.pull(doubt._id);
+    await createdBy.doubts.pull(doubt._id);
+
     await community.save();
+    await createdBy.save();
 
     await Doubt.findByIdAndDelete(doubtId);
     res.status(200).json({
@@ -195,6 +209,33 @@ exports.getDoubtDetails = async (req, res) => {
     res.status(200).json({
       success: true,
       data: doubt,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getDoubts = async (req, res) => {
+  try {
+    const doubts = await Doubt.find()
+      .populate("createdBy")
+      .populate("tags")
+      .populate("likes")
+      .populate({
+        path: "answers",
+        populate: {
+          path: "answeredBy",
+        },
+      })
+      .exec();
+
+    res.status(200).json({
+      success: true,
+      data: doubts,
     });
   } catch (error) {
     console.log(error);

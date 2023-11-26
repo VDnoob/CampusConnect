@@ -234,3 +234,29 @@ exports.getPostDetails = async (req, res) => {
     });
   }
 };
+
+exports.getPosts = async (req, res) => {
+  try {
+    const posts = await Post.find()
+      .populate("createdBy")
+      .populate("tags")
+      .populate("likes")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "commentedBy",
+        },
+      });
+
+    res.status(200).json({
+      success: true,
+      data: posts,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

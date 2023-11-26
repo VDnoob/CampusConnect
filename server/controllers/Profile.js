@@ -138,10 +138,86 @@ exports.updateProfilePicture = async (req, res) => {
   }
 };
 
+exports.updateProfileCoverPage = async (req, res) => {
+  try {
+    const userID = req.user.id;
+    const coverPicture = req.files.coverPicture;
+
+    if (!coverPicture) {
+      return res.status(400).json({
+        success: false,
+        message: "coverPicture is missing",
+      });
+    }
+
+    let user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "user not found",
+      });
+    }
+
+    const image = await uploadToCloudinary(
+      coverPicture,
+      process.env.FOLDER_NAME_COMMUNITY
+    );
+
+    user.coverPicture = image.secure_url;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile cover page updated successfully",
+      data: user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 exports.getUserPost = async (req, res) => {
   try {
     const id = req.user.id;
     const user = await User.findById(id).populate("posts").exec();
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User Data fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getUserDoubts = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const user = await User.findById(id).populate("doubts").exec();
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: "User Data fetched successfully",
@@ -180,6 +256,7 @@ exports.getUserEntireDetails = async (req, res) => {
       .populate("additionalDetails")
       .populate("community")
       .populate("posts")
+      .populate("doubts")
       .exec();
     res.status(200).json({
       success: true,
@@ -189,6 +266,41 @@ exports.getUserEntireDetails = async (req, res) => {
   } catch (error) {
     console.log("Error occured while fetching user details");
     console.log(error);
+  }
+};
+
+exports.getotheruserdetails = async (req, res) => {
+  try {
+    const userID = req.body.userID;
+    const user = await User.findById(userID)
+      .populate("additionalDetails")
+      .populate("community")
+      .populate("posts")
+      .populate("doubts")
+      .exec();
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.password = undefined;
+    user.token = undefined;
+    user.reserPasswordExpires = undefined;
+
+    res.status(200).json({
+      success: true,
+      message: "User Data fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
