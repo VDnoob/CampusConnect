@@ -1,0 +1,58 @@
+.post {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+
+.post__header {
+    display: flex;
+    margin: 10px;
+
+}
+
+.post__avatar {
+    height: 35px !important;
+    width: 35px !important;
+}
+
+.post__info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.post__info>h2 {
+    font-size: 16px;
+    margin-top: 0;
+}
+
+.post__info__desc {
+    /* margin-top: -10px; */
+    font-size: 12px;
+    color: gray;
+}
+
+.post__body>p {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.post__buttons {
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.post__body img.post__image {
+    /* Define styles for the post image */
+    width: 100%;
+    /* Make the image fill the container */
+    max-height: 300px;
+    /* Set a maximum height if needed */
+    object-fit: cover;
+    /* Maintain aspect ratio and cover the container */
+    border-radius: 8px;
+    /* Add rounded corners if desired */
+}

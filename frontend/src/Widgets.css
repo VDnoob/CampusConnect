@@ -1,0 +1,35 @@
+.widgets{
+    position: sticky;
+    flex:0.2;
+    margin-left: 2vh;
+    margin-right: 2vh;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    height: fit-content;
+    width: max-content;
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+
+h2{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.widgets__header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.widgets_articles:hover{
+   background-color: whitesmoke;
+}
+
+.ccInfo{
+    margin-left: 2vh;
+    margin-right: 2vh;
+    font-size: 15px;
+}
