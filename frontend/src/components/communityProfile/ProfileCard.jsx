@@ -1,7 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function ProfileCard({ isCreator, onUpdateButtonClick }) {
+export default function ProfileCard({
+  isCreator,
+  isModerator,
+  onUpdateButtonClick,
+}) {
   const [isActive, setIsActive] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setIsActive(!isActive);
@@ -11,9 +18,21 @@ export default function ProfileCard({ isCreator, onUpdateButtonClick }) {
     onUpdateButtonClick();
   };
 
+  const handleDeleteButtonClick = () => {
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmDelete = () => {
+    navigate("/");
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirmation(false);
+  };
+
   return (
     <div>
-      <div className="w-[100%] h-[300px] bg-[#f5f5f5] mt-[10px] border-[1px] border-solid rounded-[7px] flex flex-col">
+      <div className="w-[100%] h-[300px] bg-[#f5f5f5] mt-[100px] border-[1px] border-solid rounded-[7px] flex flex-col">
         <img
           className="w-[100%] h-[40%] rounded-t-[7px] object-cover"
           alt="community-name"
@@ -33,18 +52,27 @@ export default function ProfileCard({ isCreator, onUpdateButtonClick }) {
         <div className="md:flex-row flex flex-col">
           <button
             onClick={handleClick}
-            className={`px-4 py-2 w-[200px] font-sans ${isActive ? "bg-green-500" : "bg-blue-500"
-              } text-white rounded m-[10px]`}
+            className={`px-2 py-2 w-[200px] font-sans ${
+              isActive ? "bg-green-500" : "bg-blue-500"
+            } text-white rounded m-[10px]`}
           >
             {isActive ? "Following" : "Follow Community"}
           </button>
 
-          {isCreator && (
+          {(isCreator || isModerator) && (
             <button
               onClick={handleUpdateButtonClick}
-              className="px-4 py-2 w-[200px] font-sans bg-yellow-500 text-white rounded m-[10px]"
+              className="px-2 py-2 w-[200px] font-sans bg-yellow-500 text-white rounded m-[10px]"
             >
               Update Community
+            </button>
+          )}
+
+          {isCreator && (
+            <button 
+              onClick={handleDeleteButtonClick}
+              className="px-2 py-2 w-[200px] font-sans bg-red-500 text-white rounded m-[10px]">
+              Delete Community
             </button>
           )}
         </div>
@@ -64,6 +92,15 @@ export default function ProfileCard({ isCreator, onUpdateButtonClick }) {
           Messi's Kingdom, where passion knows no boundaries.
         </p>
       </div>
+
+      {showConfirmation && (
+        <div className="fixed -translate-x-2/4 -translate-y-2/4 bg-[white] border rounded-xl shadow-lg z-[1000] text-center p-5 border-solid border-[#ccc] left-2/4 top-2/4">
+          <p className="mb-[15px]">Are you sure you want to delete your community?</p>
+          <button className="px-2 py-2 w-[80px] font-sans text-white rounded m-[10px] bg-blue-500" onClick={handleConfirmDelete}>OK</button>
+          <button className="px-2 py-2 w-[80px] font-sans text-white rounded m-[10px] bg-blue-500" onClick={handleCancelDelete}>Cancel</button>
+        </div>
+      )}
+
     </div>
   );
 }
