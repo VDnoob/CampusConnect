@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+// import { useNavigate } from "react-router-dom";
 
 export default function CommunityForm({ onCloseForm, onCancelForm }) {
+  // const Navigate = useNavigate();
   const [members, setMembers] = useState([
     'Member1',
     'Member2',
@@ -22,12 +24,15 @@ export default function CommunityForm({ onCloseForm, onCancelForm }) {
 
   const handleCancel = () => {
     // Clear the selected moderator
+
     setSelectedModerator('');
   };
 
   const handleCancelForm = () => {
     // Clear the selected moderator and close the form
     // event.preventDefault();
+    onCloseForm();
+    // Navigate("../CommunityProfile");
     setSelectedModerator('');
     onCancelForm();
   };

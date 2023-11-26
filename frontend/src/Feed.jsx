@@ -14,19 +14,23 @@ function Feed() {
 
   useEffect(() => {
     // Make a GET request to fetch posts
+    const token = localStorage.getItem("Token");
+    // console.log(token);
     const fetchPosts = async () => {
       try {
         const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/getUserPosts', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
             // Add any additional headers as needed
-          },
+          }
         });
 
         if (response.ok) {
           const data = await response.json();
-          setPosts(data);
+          // console.log(data.data.posts);
+          setPosts(data.data.posts);
         } else {
           console.error('Failed to fetch posts');
         }
