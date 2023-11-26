@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { Avatar } from "@mui/material";
 import InputOption from "./InputOption";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
@@ -12,6 +12,7 @@ export default function PostTemplate({
   profileImg,
   onDelete,
   onUpdate,
+  tag,
 }) {
   const [isOptionsVisible, setOptionsVisible] = useState(false);
   const optionsRef = useRef(null);
@@ -24,7 +25,7 @@ export default function PostTemplate({
   };
 
   const handleDeleteClick = () => {
-    console.log('Delete clicked');
+    console.log("Delete clicked");
     if (onDelete) {
       onDelete();
     }
@@ -42,10 +43,10 @@ export default function PostTemplate({
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [isOptionsVisible, isEditing]);
 
@@ -90,12 +91,17 @@ export default function PostTemplate({
       </div>
 
       <div className="bg-[white] p-[15px] rounded-[10px]">
+
         <div className="flex m-2.5">
           <Avatar src={profileImg} className="h-[35px] w-[35px]" />
           <div className="flex flex-col ml-2.5">
             <h2 className="text-base mt-0">{name}</h2>
             <p className="mt-[-2px] text-xs text-[gray]">{description}</p>
           </div>
+        </div>
+
+        <div className="m-2.5">
+          <span className="p-[5px] bg-[#e2e8f0] text-[#2d3748] rounded-2xl text-xs">{tag}</span>
         </div>
 
         <div>
@@ -117,7 +123,6 @@ export default function PostTemplate({
             color="gray"
           />
           <InputOption Icon={SmsRoundedIcon} title="Comment" color="gray" />
-          <InputOption Icon={ShareRoundedIcon} title="Share" color="gray" />
         </div>
 
         {isEditing && (
