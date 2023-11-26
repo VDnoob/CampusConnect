@@ -23,7 +23,7 @@ export default function ProfileCard({
   };
 
   const handleConfirmDelete = () => {
-    navigate("/");
+    navigate("/Community");
   };
 
   const handleCancelDelete = () => {
