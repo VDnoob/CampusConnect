@@ -1,38 +1,138 @@
+import React, { useState } from 'react';
+import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
-import { useState } from 'react';
-import CreateCommunity from './communities/CreateCommunity';
+import CreateCommunity from '../components/communities/CreateCommunity';
 
-export default function Search() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+const sampleOptions = [
+  'Computer Science',
+  'Electrical Engineering',
+  'Mechanical Engineering',
+  'Business Administration',
+  'Psychology',
+  'Mathematics',
+  'Biology',
+  'Chemistry',
+  'Physics',
+  'Sociology',
+];
 
-  const handleCreateCommunity = () => {
-    setIsFormOpen(true);
+function Search({ onSearch, onCancel }) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
+  const [showOptions, setShowOptions] = useState(false);
+
+  const filteredOptions = sampleOptions.filter(
+    (option) =>
+      option.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      searchTerm.trim() !== ''
+  );
+
+  const handleSelectOption = (option) => {
+    setSelectedOption(option);
+    setSearchTerm(option);
+    setShowOptions(false);
+  };
+
+  const handleRemoveOption = () => {
+    setSearchTerm('');
+    setSelectedOption('');
+  };
+
+  const handleSearch = () => {
+    // console.log(Searching for ${ searchTerm });
+    setShowOptions(false);
+    if (onSearch) {
+      onSearch(searchTerm);
+    }
+  };
+
+  const handleCancel = () => {
+    setShowOptions(true);
+    if (onCancel) {
+      onCancel();
+    }
   };
 
   return (
-    <div className="flex items-center w-full">
-      <div className="flex items-center w-3/4">
-        <SearchIcon className='pl-[2px]' />
-        <input
+    <div className="relative">
+      <div className="flex items-center">
+        <SearchIcon className="pl-[2px]" />
+        <TextField
           type="search"
           className="block w-full p-4 pl-10 text-sm rounded-lg bg-gray-50"
           placeholder="Search Community"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setShowOptions(true);
+          }}
         />
-      </div>
-
-      <div className="w-1/4 ml-2.5 flex items-center justify-end">
         <button
           type="button"
-          className="text-white bg-blue-500 hover:bg-blue-700 font-medium rounded-lg text-sm px-4 py-2 flex items-center"
-          onClick={handleCreateCommunity}
+          onClick={onSearch ? null : handleSearch}
+          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2"
         >
-          <AddIcon className="mr-2" /> Create Community
+          Search
         </button>
+        {showOptions && filteredOptions.length > 0 && (
+          <div className="absolute top-full left-0 right-0 bg-white border rounded-md border-gray-300 mt-2">
+            {filteredOptions.map((option, index) => (
+              <div
+                key={index}
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => handleSelectOption(option)}
+              >
+                {option}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+    </div>
+  );
+}
 
-      {/* Render the form if isFormOpen is true */}
-      {isFormOpen && <CreateCommunity onClose={() => setIsFormOpen(false)} />}
+export default function CombinedComponent() {
+  const [showCreateCommunityForm, setShowCreateCommunityForm] = useState(false);
+  const [activeTab, setActiveTab] = useState('join'); // 'join' or 'create'
+
+  const handleCreateCommunityClick = () => {
+    setShowCreateCommunityForm(true);
+    setActiveTab('join'); // Switch to the 'Join Community' tab
+  };
+
+  const handleCancelCreateCommunity = () => {
+    setShowCreateCommunityForm(false);
+    setActiveTab('join'); // Switch to the 'Join Community' tab
+  };
+
+  const handleCreateCommunity = () => {
+    // console.log(Creating community);
+    setShowCreateCommunityForm(false);
+    setActiveTab('join'); // Switch to the 'Join Community' tab
+  };
+
+  return (
+    <div>
+      {!showCreateCommunityForm && activeTab === 'join' && (
+        <React.Fragment>
+          <Search onSearch={handleCreateCommunityClick} />
+          <button
+            type="button"
+            onClick={handleCreateCommunityClick}
+            className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-4 py-2 mt-4"
+          >
+            Create Community
+          </button>
+        </React.Fragment>
+      )}
+
+      {showCreateCommunityForm && (
+        <CreateCommunity
+          onCancel={handleCancelCreateCommunity}
+          onClose={() => setShowCreateCommunityForm(false)}
+        />
+      )}
     </div>
   );
 }
