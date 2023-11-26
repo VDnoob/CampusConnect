@@ -1,6 +1,7 @@
 import React from "react";
 import img from "./img.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import { Token } from "@mui/icons-material";
 
 function SignInForm() {
     const Navigate = useNavigate();
@@ -43,7 +44,6 @@ function SignInForm() {
 
     const handleOnSubmit = async (evt) => {
         evt.preventDefault();
-
         const { email, password, rememberMe } = state;
 
         // Assuming you have an API call function for login
@@ -56,24 +56,34 @@ function SignInForm() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password }),
-            });
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const token = data.token;
+                    // Now you can use the token as needed
+                    localStorage.setItem("Token", token);
+                    console.log(token);
 
+                    // If "Remember Me" is checked, save credentials to local storage
+                    if (rememberMe) {
+                        localStorage.setItem("rememberedEmail", email);
+                        localStorage.setItem("rememberedPassword", password);
+                    }
+                    // console.log(response.json());
+                    // console.log(data.token);
+
+                    // Redirect to the Home page
+                    Navigate("/Home");
+
+                    // You can also perform a GET request here if needed
+
+                })
+                .catch(error => {
+                    // Handle errors
+                    alert("Invalid credentials. Please try again.");
+                    console.error(error);
+                });
             // Assuming the API returns a success status
-            if (response.ok) {
-                // If "Remember Me" is checked, save credentials to local storage
-                if (rememberMe) {
-                    localStorage.setItem("rememberedEmail", email);
-                    localStorage.setItem("rememberedPassword", password);
-                }
-                console.log(response);
-                // Redirect to the Home page
-                Navigate("/Home");
-
-                // You can also perform a GET request here if needed
-            } else {
-                // Handle authentication error
-                alert("Invalid credentials. Please try again.");
-            }
         } catch (error) {
             console.error("Error during login:", error);
         }

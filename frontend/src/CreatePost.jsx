@@ -14,21 +14,19 @@ const CreatePost = () => {
 
     useEffect(() => {
         // Fetch community list when the component mounts
+        const token = localStorage.getItem("Token");
         const fetchCommunityList = async () => {
             try {
-                const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/auth/getUserMemberCommunity', {
+                const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/getUserMemberCommunity', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
                         // Add any other headers your backend requires
                     },
+
                 });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch community list');
-                }
-
-                const data = await response.json();
+                const data = await response.json().data.community;
                 setCommunityList(data);
             } catch (error) {
                 console.error('Error fetching community list:', error);
