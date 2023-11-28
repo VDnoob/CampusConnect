@@ -210,10 +210,10 @@ exports.deleteCommunity = async (req, res) => {
 
 exports.getCommunityDetails = async (req, res) => {
   try {
-    const { name } = req.body;
+    const name = req.body.name;
 
     if (!name) {
-      return res.status(200).json({
+      return res.status(404).json({
         success: false,
         message: "Community name is missing",
       });
@@ -580,6 +580,30 @@ exports.updateCommunityCoverPage = async (req, res) => {
       success: true,
       message: "Community cover page updated successfully",
       data: communityExists,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getAllCommunities = async (req, res) => {
+  try {
+    const communities = await Community.find({})
+      .populate("createdBy")
+      .populate("members")
+      .populate("moderators")
+      .populate("posts")
+      .populate("doubts")
+      .exec();
+
+    res.status(200).json({
+      success: true,
+      message: "Communities fetched successfully",
+      data: communities,
     });
   } catch (error) {
     console.log(error);

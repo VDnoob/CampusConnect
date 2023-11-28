@@ -11,9 +11,9 @@ const { likeComment, unlikeComment } = require("../controllers/CommentLike");
 
 router.post("/create", auth, createComment);
 router.put("/update", auth, updateComment);
-router.delete("/delete/", auth, deleteComment);
+router.delete("/delete", auth, deleteComment);
 
-router.post("/like/", auth, likeComment);
-router.post("/unlike/", auth, unlikeComment);
+router.post("/like", auth, likeComment);
+router.post("/unlike", auth, unlikeComment);
 
 module.exports = router;
