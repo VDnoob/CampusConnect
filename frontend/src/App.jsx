@@ -10,6 +10,7 @@ import Home from './Home.jsx';
 import Profile from './Profile.jsx';
 import Community from './Community.jsx';
 import Sign2 from './Login/Sign2.jsx';
+import ResetPassword from './Login/ResetPassword.jsx';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/CreatePost" element={<CreatePost />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Community/*" element={<Community />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Routes>
     </Router>
   )

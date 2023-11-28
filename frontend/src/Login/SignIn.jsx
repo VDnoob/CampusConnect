@@ -45,6 +45,10 @@ function SignInForm() {
     const handleOnSubmit = (evt) => {
         evt.preventDefault();
         const { email, password, rememberMe } = state;
+        if (password.length < 5) {
+            alert("Password should be at least 5 characters long");
+            return;
+        }
 
         fetch("https://campusconnectbackend.onrender.com/api/v1/auth/login", {
             method: "POST",

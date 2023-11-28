@@ -18,11 +18,56 @@ function SignUpForm() {
 
     const handleChange = (evt) => {
         const value = evt.target.value;
-        setState({
-            ...state,
-            [evt.target.name]: value,
-        });
+        const name = evt.target.name;
+
+        if (name === "firstName" || name === "lastName") {
+            // Check if the first name or last name length exceeds 15 characters
+            if (value.length > 15) {
+                // If it does, truncate it to the first 15 characters
+                setState({
+                    ...state,
+                    [name]: value.slice(0, 15),
+                });
+                alert(`${name === "firstName" ? "First" : "Last"} name should not exceed 15 characters`);
+            } else {
+                setState({
+                    ...state,
+                    [name]: value,
+                });
+            }
+        } else if (name === "email") {
+            // Check if the email length exceeds 30 characters
+            if (value.length > 30) {
+                // If it does, truncate it to the first 30 characters
+                setState({
+                    ...state,
+                    [name]: value.slice(0, 30),
+                });
+                alert("Email should not exceed 30 characters");
+            } else {
+                setState({
+                    ...state,
+                    [name]: value,
+                });
+            }
+        } else {
+            // Check if the value length exceeds 15 characters for password and confirm password
+            if (value.length > 15) {
+                // If it does, truncate it to the first 15 characters
+                setState({
+                    ...state,
+                    [name]: value.slice(0, 15),
+                });
+                alert("Password should not exceed 15 characters");
+            } else {
+                setState({
+                    ...state,
+                    [name]: value,
+                });
+            }
+        }
     };
+
 
 
     const handleOnSubmit = async (evt) => {
@@ -39,6 +84,20 @@ function SignUpForm() {
         // Password and confirmPassword match validation
         if (password !== confirmPassword) {
             alert("Passwords do not match");
+            return;
+        }
+
+        if (password.length < 5) {
+            alert("Password should be at least 5 characters long");
+            return;
+        }
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{5,}$/;
+        if (!passwordRegex.test(password)) {
+            alert("Password should start with a capital letter and include a special character");
+            return;
+        }
+        if (password.length > 15 || confirmPassword.length > 15) {
+            alert("Password should not exceed 15 characters");
             return;
         }
         const signupData = {

@@ -21,8 +21,8 @@ function Sidebar() {
                 });
 
                 const data = await response.json();
-                // console.log(data);
-                setUserData(data);
+                // console.log(data.data);
+                setUserData(data.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -38,7 +38,7 @@ function Sidebar() {
                 <Link to="/Profile" >
                     <Avatar className="sidebar__avatar" src={header_img} />
                 </Link>
-                <h2>{userData.name}</h2>
+                <h2>{userData.firstName}</h2>
                 <h4>{userData.email}</h4>
             </div>
 
