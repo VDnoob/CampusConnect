@@ -1,6 +1,6 @@
 import { useState } from "react";
-import JoinCommunitiesTab from "../components/communities/JoinCommunitiestab";
-import YourCommunitiesTab from "../components/communities/YourCommunitiesTab";
+import JoinCommunitiesTab from "../CommunityComponents/communities/JoinCommunitiestab";
+import YourCommunitiesTab from "../CommunityComponents/communities/YourCommunitiesTab";
 import Header from "./Header";
 
 export default function Communities() {

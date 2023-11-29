@@ -1,9 +1,9 @@
 import { useState } from "react"
-import ProfileCard from "../components/communityProfile/ProfileCard"
-import Feed from "../components/communityProfile/Feed"
-import UpdateCommunity from "../components/communityProfile/UpdateCommunity"
-import MembersList from "../components/communityProfile/MembersList"
-import ModeratorsList from "../components/communityProfile/ModeratorsList"
+import ProfileCard from "../CommunityComponents/communityProfile/ProfileCard"
+import Feed from "../CommunityComponents/communityProfile/Feed"
+import UpdateCommunity from "../CommunityComponents/communityProfile/UpdateCommunity"
+import MembersList from "../CommunityComponents/communityProfile/MembersList"
+import ModeratorsList from "../CommunityComponents/communityProfile/ModeratorsList"
 import Header from "./Header"
 
 export default function CommunityProfile() {
