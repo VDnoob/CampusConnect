@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
-import CreateCommunity from '../components/communities/CreateCommunity';
+import CreateCommunity from '../CommunityComponents/communities/CreateCommunity';
 
 const sampleOptions = [
   'Computer Science',
