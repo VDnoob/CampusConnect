@@ -28,11 +28,40 @@ function SignInForm() {
 
     const handleChange = (evt) => {
         const value = evt.target.value;
-        setState({
-            ...state,
-            [evt.target.name]: value,
-        });
-    };
+        const name = evt.target.name;
+
+        if (name === "email") {
+            // Check if the email length exceeds 30 characters
+            if (value.length > 30) {
+                // If it does, truncate it to the first 30 characters
+                setState({
+                    ...state,
+                    [name]: value.slice(0, 30),
+                });
+                alert("Email should not exceed 30 characters");
+            } else {
+                setState({
+                    ...state,
+                    [name]: value,
+                });
+            }
+        } else {
+            // Check if the value length exceeds 15 characters for password and confirm password
+            if (value.length > 15) {
+                // If it does, truncate it to the first 15 characters
+                setState({
+                    ...state,
+                    [name]: value.slice(0, 15),
+                });
+                alert("Password should not exceed 15 characters");
+            } else {
+                setState({
+                    ...state,
+                    [name]: value,
+                });
+            }
+        };
+    }
 
     const handleRememberMeChange = (evt) => {
         const isChecked = evt.target.checked;
@@ -45,6 +74,7 @@ function SignInForm() {
     const handleOnSubmit = (evt) => {
         evt.preventDefault();
         const { email, password, rememberMe } = state;
+
         if (password.length < 5) {
             alert("Password should be at least 5 characters long");
             return;
@@ -145,4 +175,4 @@ function SignInForm() {
     );
 }
 
-export default SignInForm;
+export default SignInForm

@@ -7,14 +7,22 @@ import SmsRoundedIcon from '@mui/icons-material/SmsRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import header_img from "./header_pfp.png";
 
-function Post({ name, description, message, photoUrl }) {
+function Post({ name, description, message, photoUrl, tags }) {
+
+  // tags.map((tag) => (console.log(tag.name)));
+
   return (
     <div className='post'>
       <div className='post__header'>
         <Avatar src={header_img} className='post__avatar' />
         <div className='post__info'>
           <h2>{name}</h2>
-          <p className='post__info__desc'>{description}</p>
+          <div className='post__info__desc'>
+            {tags ? tags.map((tag, index) => (
+              <span key={index} className='post__tag'>{tag ? tag.name : null}</span>
+            )) : null}
+            <p className='post__info__desc'>{description}</p>
+          </div>
         </div>
       </div>
 

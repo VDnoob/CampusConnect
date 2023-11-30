@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 
 function Feed() {
   const [posts, setPosts] = useState([]);
+  const tags2 = ['Hii', 'Bye'];
 
   useEffect(() => {
     // Make a GET request to fetch posts
@@ -18,7 +19,7 @@ function Feed() {
     // console.log(token);
     const fetchPosts = async () => {
       try {
-        const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/getUserPosts', {
+        const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/getAllPosts', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -26,11 +27,12 @@ function Feed() {
             // Add any additional headers as needed
           }
         });
+        // console.log(response.json());
 
         if (response.ok) {
           const data = await response.json();
-          // console.log(data.data.posts);
-          setPosts(data.data.posts);
+          console.log(data.data);
+          setPosts(data.data);
         } else {
           console.error('Failed to fetch posts');
         }
@@ -68,11 +70,11 @@ function Feed() {
 
       {posts.map((post) => (
         <Post
-          key={post.id}
-          name={post.name}
-          description={post.description}
-          message={post.message}
-          photoUrl={post.photoUrl} // Assuming the field is named photoUrl
+          key={post._id}
+          name={post.createdBy.firstName + ' ' + post.createdBy.lastName}
+          tags={post.tags}
+          message={post.content}
+        // photoUrl={post.photoUrl} // Assuming the field is named photoUrl
         />
       ))}
       {/* <Post

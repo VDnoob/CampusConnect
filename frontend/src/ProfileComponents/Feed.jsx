@@ -1,10 +1,46 @@
 import CreateIcon from "@mui/icons-material/Create";
+import React, { useState, useEffect } from 'react'
 import InputOption from "./InputOption.jsx";
 import ImageIcon from "@mui/icons-material/Image";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import Post from "./Post.jsx";
 
 export default function Feed() {
+  const [posts, setPosts] = useState([]);
+  const [allDetails, setAllDetails] = useState([]);
+
+  useEffect(() => {
+    // Make a GET request to fetch posts
+    const token = localStorage.getItem("Token");
+    // console.log(token);
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/getUserPosts', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+            // Add any additional headers as needed
+          }
+        });
+        console.log(response);
+
+        if (response.ok) {
+          const data = await response.json();
+          setAllDetails(data.data);
+          console.log(data.data);
+          setPosts(data.data.posts);
+          // console.log(posts);
+        } else {
+          console.error('Failed to fetch posts');
+        }
+      } catch (error) {
+        console.error('Error during fetch:', error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
   return (
     <div className="flex-[0.2] ml-24 w-3/5">
       {/* <div className='bg-[white] mt-2.5 mb-5 pb-5 p-2.5 rounded-[10px]'>
@@ -34,7 +70,16 @@ export default function Feed() {
           <InputOption Icon={SubscriptionsIcon} title='Video' color='#E7A33E' />
         </div>
       </div> */}
-
+      {posts.map((post) => (
+        <Post
+          key={post._id}
+          name={allDetails.firstName + ' ' + allDetails.lastName}
+          tags={post.tags}
+          message={post.content}
+        // photoUrl={post.photoUrl} // Assuming the field is named photoUrl
+        />
+      ))}
+      {/* 
       <Post
         name="Narendra Modi"
         description="Started with chai, now stirring policies"
@@ -61,7 +106,7 @@ export default function Feed() {
         description="Once a cricket legend, now... well, still figuring out politics"
         message="Imran Khan's playbook: swing in cricket, swing in politics – some things never change. Is he running a country or just another innings?"
         profileImg="https://static.toiimg.com/photo/msid-76340696,imgsize-37436/76340696.jpg"
-      />
+      /> */}
     </div>
   );
 }

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { convert } from 'html-to-text';
 import "./CreatePost.css";
 import 'tailwindcss/tailwind.css'; // Import Tailwind CSS
 import { TextField, Autocomplete, Switch, FormControlLabel } from '@mui/material';
 
 const CreatePost = () => {
-    const [content, setContent] = useState('');
+    const [content2, setContent] = useState('');
     const [tags, setTags] = useState('');
     const [isDoubt, setIsDoubt] = useState(false);
     const [communityList, setCommunityList] = useState([]);
@@ -26,8 +27,14 @@ const CreatePost = () => {
                     },
 
                 });
-                const data = await response.json().data.community;
-                setCommunityList(data);
+
+
+                const data = await response.json();
+                // console.log(data.data.community);
+                // const communityLis = data.data.community
+
+                // console.log(communityLis.name);
+                setCommunityList(data.data.community);
             } catch (error) {
                 console.error('Error fetching community list:', error);
             }
@@ -38,6 +45,8 @@ const CreatePost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem("Token");
+        const content = convert(content2);
 
         try {
             // Access quillDelta directly, no need to parse JSON
@@ -50,26 +59,33 @@ const CreatePost = () => {
             //     .getContents()
             //     .ops.filter((op) => op.insert && op.insert.image)
             //     .map((op) => op.insert.image);
+            // const selectedCommunityObject = communityList.find(community => community.name === selectedCommunity);
 
+            // // Extract the ID or handle the absence as needed
+            // const communityId = selectedCommunityObject ? selectedCommunityObject._id : null;
+
+            console.log(content, selectedCommunity, tags.split(',').map(tag => tag.trim()),);
             // Define the base API endpoint
             const baseEndpoint = 'https://campusconnectbackend.onrender.com/api/v1/';
 
             // Define the endpoint based on isDoubt
             const endpoint = isDoubt ? 'doubt/create' : 'post/create';
 
+
             const response = await fetch(`${baseEndpoint}${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
                     // Add any other headers your backend requires
                 },
                 body: JSON.stringify({
                     content,
+                    communityName: selectedCommunity,
                     tags: tags.split(',').map(tag => tag.trim()), // Convert comma-separated tags to an array
-                    community: selectedCommunity,
                 }),
             });
-
+            console.log(response);
             if (!response.ok) {
                 throw new Error(`Failed to ${isDoubt ? 'create doubt' : 'create post'}`);
             }
@@ -96,7 +112,7 @@ const CreatePost = () => {
                         <label htmlFor="content" className="block text-gray-700 font-bold mb-2">Content</label>
                         <ReactQuill
                             theme="snow"
-                            value={content}
+                            value={content2}
                             onChange={(value) => setContent(value)}
                             modules={{
                                 toolbar: [
@@ -135,7 +151,7 @@ const CreatePost = () => {
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
-                            options={communityList}
+                            options={communityList.map((list) => (list.name))}
                             value={selectedCommunity}
                             onChange={(event, newValue) => setSelectedCommunity(newValue)}
                             sx={{ width: 300 }}
