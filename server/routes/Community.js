@@ -14,6 +14,8 @@ const {
   updateCommunityPicture,
   updateCommunityCoverPage,
   getAllCommunities,
+  getCommunityPosts,
+  getCommunityDoubts,
 } = require("../controllers/Community");
 
 router.get("/getDetails", auth, getCommunityDetails);
@@ -27,5 +29,7 @@ router.post("/removeModerator", auth, removeModerator);
 router.get("/getAllCommunities", auth, getAllCommunities);
 router.put("/updatePicture", auth, updateCommunityPicture);
 router.put("/updateCoverpage", auth, updateCommunityCoverPage);
+router.get("/getCommunityPosts", auth, getCommunityPosts);
+router.get("/getCommunityDoubts", auth, getCommunityDoubts);
 
 module.exports = router;

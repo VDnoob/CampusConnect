@@ -31,7 +31,7 @@ exports.resetPasswordToken = async (req, res) => {
       },
       { new: true }
     );
-    const url = `https://localhost:3000/reset-password/${token}`;
+    const url = `http://localhost:5174/reset-password/${token}`;
     await mailSender(
       email,
       "Password Reset Link",

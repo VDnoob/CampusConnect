@@ -241,6 +241,7 @@ exports.getPosts = async (req, res) => {
       .populate("createdBy")
       .populate("tags")
       .populate("likes")
+      .populate("community")
       .populate({
         path: "comments",
         populate: {

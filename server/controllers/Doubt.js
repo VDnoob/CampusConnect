@@ -225,6 +225,7 @@ exports.getDoubts = async (req, res) => {
       .populate("createdBy")
       .populate("tags")
       .populate("likes")
+      .populate("community")
       .populate({
         path: "answers",
         populate: {
