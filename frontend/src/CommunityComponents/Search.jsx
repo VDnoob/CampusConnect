@@ -59,9 +59,10 @@ function Search({ onSearch, onCancel }) {
         <SearchIcon className="pl-[2px]" />
         <TextField
           type="search"
-          className="block w-full p-4 pl-10 text-sm rounded-lg bg-gray-50"
+          className="block w-full text-sm rounded-lg bg-gray-50"
           placeholder="Search Community"
           value={searchTerm}
+          size='small'
           onChange={(e) => {
             setSearchTerm(e.target.value);
             setShowOptions(true);
@@ -70,7 +71,7 @@ function Search({ onSearch, onCancel }) {
         <button
           type="button"
           onClick={onSearch ? null : handleSearch}
-          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2"
+          className="text-white bg-blue-700 hover:bg-blue-500 font-medium rounded-lg text-sm ml-2 px-4 py-2"
         >
           Search
         </button>
@@ -120,7 +121,7 @@ export default function CombinedComponent() {
           <button
             type="button"
             onClick={handleCreateCommunityClick}
-            className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-4 py-2 mt-4"
+            className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-4 py-2 mt-4 ml-80"
           >
             Create Community
           </button>

@@ -1,17 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileCard({
-  isCreator,
-  isModerator,
+  communityDetails,
   onUpdateButtonClick,
 }) {
   const [isActive, setIsActive] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [creatorData, setCreatorData] = useState([]);
+  const [moderatorData, setModeratorData] = useState([]);
   const navigate = useNavigate();
+  const loggedInUserId = localStorage.getItem("UserId");
 
-  const handleClick = () => {
-    setIsActive(!isActive);
+  useEffect(() => {
+    if (communityDetails.createdBy && communityDetails.createdBy._id) {
+      setCreatorData(communityDetails.createdBy);
+    }
+    if (communityDetails.moderators && communityDetails.moderators.length > 0) {
+      setModeratorData(communityDetails.moderators);
+    }
+  }, [communityDetails]);
+
+  const isCreator = creatorData._id === loggedInUserId;
+  const isModerator = moderatorData.some(moderator => moderator._id === loggedInUserId);
+
+  const handleClick = async () => {
+    // try {
+    //   const token = localStorage.getItem("Token");
+
+    //   if (!isActive) {
+    //     await fetch('https://campusconnectbackend.onrender.com/api/v1/community/addMember', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         'Authorization': 'Bearer ' + token,
+    //       },
+    //       body: JSON.stringify({
+    //         communityName: communityDetails.name,
+    //         useremail: 'user@example.com',  // Replace with the actual user's email
+    //       }),
+    //     });
+    //   } else {
+    //     await fetch('https://campusconnectbackend.onrender.com/api/v1/community/removeMember', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         'Authorization': 'Bearer ' + token,
+    //       },
+    //       body: JSON.stringify({
+    //         communityName: communityDetails.name,
+    //         useremail: 'user@example.com',  // Replace with the actual user's email
+    //       }),
+    //     });
+    //   }
+
+    //   setIsActive(!isActive);
+    // } catch (error) {
+    //   console.error('Error handling follow/unfollow:', error);
+    // }
   };
 
   const handleUpdateButtonClick = () => {
@@ -22,8 +68,35 @@ export default function ProfileCard({
     setShowConfirmation(true);
   };
 
-  const handleConfirmDelete = () => {
-    navigate("/Community");
+  const handleConfirmDelete = async () => {
+    // try {
+    //   const token = localStorage.getItem("Token");
+    //   const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/community/delete', {
+    //     method: 'DELETE',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': 'Bearer ' + token,
+    //     },
+    //     body: JSON.stringify({
+    //       name: communityDetails.name,
+    //     }),
+    //   });
+  
+    //   if (response.ok) {
+    //     const data = await response.json();
+  
+    //     if (data.success) {
+    //       console.log('Deletion successful:', data.message);
+    //       navigate("/Community");
+    //     } else {
+    //       console.error('Failed to delete community:', data.message);
+    //     }
+    //   } else {
+    //     console.error('Failed to delete community');
+    //   }
+    // } catch (error) {
+    //   console.error('Error confirming delete:', error);
+    // }
   };
 
   const handleCancelDelete = () => {
@@ -36,17 +109,17 @@ export default function ProfileCard({
         <img
           className="w-[100%] h-[40%] rounded-t-[7px] object-cover"
           alt="community-name"
-          src="https://e0.365dm.com/22/06/2048x1152/skysports-lionel-messi-argentina_5796389.jpg?20220605214548"
+          src={communityDetails.coverPage}
         />
 
         <img
           className="w-[25%] h-[55%] object-cover rounded-[50%] mt-[-60px] ml-[10px] p-[2px] border-[1px] border-solid border-[#b7b7b7]"
           alt="community-name"
-          src="https://e0.365dm.com/22/12/2048x1152/skysports-lionel-messi-argentina_6000508.jpg"
+          src={communityDetails.picture}
         />
 
         <h1 className="font-bold font-sans text-lg md:text-3xl ml-[10px]">
-          Messi's Kingdom
+          {communityDetails.name}
         </h1>
 
         <div className="md:flex-row flex flex-col">
@@ -69,9 +142,9 @@ export default function ProfileCard({
           )}
 
           {isCreator && (
-            <button 
+            <button   
               onClick={handleDeleteButtonClick}
-              className="px-2 py-2 w-[200px] font-sans bg-red-500 text-white rounded m-[10px]">
+              className="px-2 py-1 w-[200px] font-sans bg-red-500 text-white rounded m-[10px]">
               Delete Community
             </button>
           )}
@@ -83,13 +156,13 @@ export default function ProfileCard({
           About this Community
         </p>
         <p className="m-[10px] font-sans text-base">
-          Messi's Kingdom is a dynamic community uniting football enthusiasts
-          under the banner of Lionel Messi's enduring legacy. Beyond matchday
-          discussions and career insights, we foster camaraderie, creativity,
-          and mutual support. Whether you're a devoted fan or inspired by
-          Messi's journey, join us in celebrating the beautiful game and the
-          spirit of togetherness that defines our vibrant community. Welcome to
-          Messi's Kingdom, where passion knows no boundaries.
+          {communityDetails.description}
+        </p>
+        <p className="font-medium font-sans text-xl m-[10px]">
+          Tags
+        </p>
+        <p className="m-[10px] font-sans text-base">
+          {communityDetails.tags}
         </p>
       </div>
 

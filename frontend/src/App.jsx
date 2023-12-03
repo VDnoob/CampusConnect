@@ -25,7 +25,7 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/CreatePost" element={<CreatePost />} />
         <Route path="/Profile" element={<Profile />} />
-        <Route path="/Community/*" element={<Community />} />
+        <Route path="/Community/*" element={<Community />} /> 
         <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Routes>
     </Router>

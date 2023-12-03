@@ -3,21 +3,24 @@ import { Avatar } from "@mui/material";
 import InputOption from "./InputOption";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import SmsRoundedIcon from "@mui/icons-material/SmsRounded";
-import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 
 export default function PostTemplate({
   name,
-  description,
   message,
   profileImg,
   onDelete,
   onUpdate,
-  tag,
+  tags,
+  likes,
+  comments,
 }) {
   const [isOptionsVisible, setOptionsVisible] = useState(false);
   const optionsRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedMessage, setUpdatedMessage] = useState(message);
+  const [liked, setLiked] = useState(false);
+  const [numOfLikes, setNumOfLikes] = useState(likes);
+  const [likeColor, setLikeColor] = useState("gray");
 
   const handleUpdateClick = () => {
     setOptionsVisible(false);
@@ -29,6 +32,54 @@ export default function PostTemplate({
     if (onDelete) {
       onDelete();
     }
+  };
+
+  const changeLikeButton = async () => {
+    // const token = localStorage.getItem("Token");
+    // try {
+    //   const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/like', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': 'Bearer ' + token,
+    //     },
+    //     body: JSON.stringify({ postId: '' }),  /* pass the post ID here */
+    //   });
+
+    //   if (response.ok) {
+    //     setLiked(true);
+    //     setNumOfLikes(numOfLikes + 1);
+    //     setLikeColor("#3480cd");
+    //   } else {
+    //     console.error('Failed to like the post');
+    //   }
+    // } catch (error) {
+    //   console.error('Error while liking the post:', error);
+    // }
+  };
+
+  const changeUnlikeButton = async () => {
+    // const token = localStorage.getItem("Token");
+    // try {
+    //   const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/unlike', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': 'Bearer ' + token,
+    //     },
+    //     body: JSON.stringify({ postId: '' }),  /* pass the post ID here */
+    //   });
+
+    //   if (response.ok) {
+    //     setLiked(false);
+    //     setNumOfLikes(numOfLikes - 1);
+    //     setLikeColor("gray");
+    //   } else {
+    //     console.error('Failed to unlike the post');
+    //   }
+    // } catch (error) {
+    //   console.error('Error while unliking the post:', error);
+    // }
   };
 
   useEffect(() => {
@@ -91,17 +142,17 @@ export default function PostTemplate({
       </div>
 
       <div className="bg-[white] p-[15px] rounded-[10px]">
-
-        <div className="flex m-2.5">
+        <div className="flex items-center m-2.5">
           <Avatar src={profileImg} className="h-[35px] w-[35px]" />
           <div className="flex flex-col ml-2.5">
             <h2 className="text-base mt-0">{name}</h2>
-            <p className="mt-[-2px] text-xs text-[gray]">{description}</p>
           </div>
         </div>
 
         <div className="m-2.5">
-          <span className="p-[5px] bg-[#e2e8f0] text-[#2d3748] rounded-2xl text-xs">{tag}</span>
+          {tags ? tags.map((tag, index) => (
+              <span key={index} className='inline-block bg-[#e0e0e0] text-xs text-[#333] mr-[5px] px-2.5 py-[5px] rounded-lg'>{tag ? tag.name : null}</span>
+            )) : null}
         </div>
 
         <div>
@@ -117,12 +168,16 @@ export default function PostTemplate({
         </div>
 
         <div className="flex justify-evenly">
-          <InputOption
-            Icon={ThumbUpAltOutlinedIcon}
-            title="Like"
-            color="gray"
-          />
-          <InputOption Icon={SmsRoundedIcon} title="Comment" color="gray" />
+          <div onClick={liked ? changeUnlikeButton : changeLikeButton}>
+            <InputOption
+              Icon={liked ? ThumbUpIcon : ThumbUpAltOutlinedIcon}
+              title={`${numOfLikes} Likes`}
+              color={likeColor}
+            />
+          </div>
+          <div>
+            <InputOption Icon={SmsRoundedIcon} title="Comment" color="gray" />
+          </div>
         </div>
 
         {isEditing && (

@@ -8,7 +8,7 @@ export default function Community() {
     return (
         <Routes>
             <Route path="/" element={<Communities />} />
-            <Route path="/CommunityProfile" element={<CommunityProfile />} />
+            <Route path="/CommunityProfile/:name" element={<CommunityProfile />} />
         </Routes>
     )
 }
