@@ -1,13 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Edit = ({ onBackToApp }) => {
   const [userData, setUserData] = useState({
-    about: "I am an experienced UI/UX Designer, working for group 10 project",
-    lastName: 'Doe',
-    username: 'JohnDoe',
-    email: 'johndoe@example.com',
-    // Add more fields as needed
+    about: '',
+    lastName: '',
+    firstName: '',
+    profilePicture:'',
+    coverPicture:'',
+    collegeBranch: 'empty',
+    collegeName: 'empty',
+    dateOfbirth: '',
+
+
+    
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('Token');
+        const response = await fetch(
+          'https://campusconnectbackend.onrender.com/api/v1/profile/getUserEntireDetails',
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + token,
+            },
+          }
+        );
+
+        const data = await response.json();
+        if (data.data) {
+          setUserData(data.data);
+        } else {
+          console.warn('Received undefined data from the server');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array to run only once on mount
+
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -17,7 +53,7 @@ const Edit = ({ onBackToApp }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData({
+   setUserData({
       ...userData,
       [name]: value,
     });
@@ -87,14 +123,27 @@ const Edit = ({ onBackToApp }) => {
         <form onSubmit={handleSubmit} className="space-y-4"></form>
         {/* Profile Information */}
         <div>
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-            Username
+        <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+            FirstName
           </label>
           <input
             type="text"
-            id="username"
-            name="username"
-            value={userData.username}
+            id="firstName"
+            name="firstName"
+            value={userData.firstName}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
+          />
+        </div>
+        <div>
+          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+            LastName
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            name="LastName"
+            value={userData.lastName}
             onChange={handleChange}
             className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
           />
@@ -120,25 +169,13 @@ const Edit = ({ onBackToApp }) => {
             type="date"
             id="dob"
             name="DateOfBirth"
-            value={userData.dob}
+            value={userData.dateOfbirth}
             onChange={handleChange}
             className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
           />
         </div>
 
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={userData.email}
-            onChange={handleChange}
-            className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
-          />
-        </div>
+        
         <div>
           <label htmlFor="college" className="block text-sm font-medium text-gray-700">
             College/University
@@ -147,7 +184,7 @@ const Edit = ({ onBackToApp }) => {
             type="text"
             id="college"
             name="college"
-            value={userData.college}
+            value={userData.collegeName}
             onChange={handleChange}
             className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
           />
@@ -160,7 +197,7 @@ const Edit = ({ onBackToApp }) => {
             type="text"
             id="branch"
             name="branch"
-            value={userData.branch}
+            value={userData.collegeBranch}
             onChange={handleChange}
             className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
           />
