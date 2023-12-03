@@ -1,8 +1,35 @@
 // Profile.jsx
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 function Profilecomp({ onEditClick }) {
+
+  const [userData, setUserData] = useState({ firstName: '', email: '' , lastName: '', dateOfBirth:'', about: '', ProfilePicture: '', ProfileCoverPage:''});
+  const navigate = useNavigate(); 
+    useEffect(() => {
+        const token = localStorage.getItem("Token");
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/getUserEntireDetails', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                    },
+                });
+
+                const data = await response.json();
+                // console.log(data.data);
+                setUserData(data.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alert('Error fetching user details. Please try again later.');
+            }
+        };
+
+        fetchData();
+    }, []);
   return (
     <div className="">
       <div>
