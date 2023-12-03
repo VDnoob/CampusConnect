@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Posts from "./Posts";
 import Doubts from "./Doubts";
 
-export default function Feed() {
+export default function Feed({communityName}) {
   const [value, setValue] = useState("one");
 
   const handleChange = (event, newValue) => {
@@ -27,12 +27,12 @@ export default function Feed() {
 
       {value === "one" && (
         <TabPanel value={value} index="one">
-          <Posts />
+          <Posts communityName={communityName}/>
         </TabPanel>
       )}
       {value === "two" && (
         <TabPanel value={value} index="two">
-          <Doubts />
+          <Doubts communityName={communityName}/>
         </TabPanel>
       )}
     </Box>
