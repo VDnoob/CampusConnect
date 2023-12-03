@@ -82,8 +82,6 @@ export default function PostTemplate({
     // }
   };
 
-  
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
