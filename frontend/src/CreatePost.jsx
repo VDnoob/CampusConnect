@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { convert } from 'html-to-text';
@@ -12,6 +12,7 @@ const CreatePost = () => {
     const [isDoubt, setIsDoubt] = useState(false);
     const [communityList, setCommunityList] = useState([]);
     const [selectedCommunity, setSelectedCommunity] = useState(null);
+    const quillRef = useRef();
 
     useEffect(() => {
         // Fetch community list when the component mounts
@@ -30,7 +31,7 @@ const CreatePost = () => {
 
 
                 const data = await response.json();
-                // console.log(data.data.community);
+                console.log(data.data.community);
                 // const communityLis = data.data.community
 
                 // console.log(communityLis.name);
@@ -43,49 +44,85 @@ const CreatePost = () => {
         fetchCommunityList();
     }, []);
 
+    const dataURLtoFile = (dataURL) => {
+        const arr = dataURL.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], 'image.png', { type: mime });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem("Token");
-        const content = convert(content2);
+
+        // Extract text content from ReactQuill
+        const quill = quillRef.current.getEditor();
+        const content = quill.getText();
+
+        // Extract image data from delta
+        const delta = quill.getContents();
+        const imageFiles = delta.ops
+            .filter(op => op.insert && op.insert.image)
+            .map(op => op.insert.image);
+
+        // Assuming you want to upload the first image found
+        const imageFile = imageFiles[0];
+
+        let formData = new FormData();
+
+        if (imageFile) {
+            // Convert the data URL to a file and append it to formData
+            const file = dataURLtoFile(imageFile);
+            formData.append('file', file);
+        }
 
         try {
-            // Access quillDelta directly, no need to parse JSON
-            // console.log(content);
-            // const quillDelta = content;
-            // const text = quillDelta
-            //     .getContents()
-            //     .ops.map((op) => op.insert).join('');
-            // const images = quillDelta
-            //     .getContents()
-            //     .ops.filter((op) => op.insert && op.insert.image)
-            //     .map((op) => op.insert.image);
-            // const selectedCommunityObject = communityList.find(community => community.name === selectedCommunity);
-
-            // // Extract the ID or handle the absence as needed
-            // const communityId = selectedCommunityObject ? selectedCommunityObject._id : null;
-
-            console.log(content, selectedCommunity, tags.split(',').map(tag => tag.trim()),);
             // Define the base API endpoint
             const baseEndpoint = 'https://campusconnectbackend.onrender.com/api/v1/';
 
             // Define the endpoint based on isDoubt
             const endpoint = isDoubt ? 'doubt/create' : 'post/create';
 
+            // let tagArray = [];
+            const tagArray = tags.split(',').map(tag => tag.trim().replace(/[^a-zA-Z0-9 ]/g, ''));
+            // const tagsJsonString = JSON.stringify(tagArray);
+            const tagsString = tagArray.join(',');
+            console.log(tagsString);
+            // Check if tags input contains a comma
+            // if (tags.includes(',')) {
+            //     tagArray = tags.split(',').map(tag => tag.trim());
+            // } else {
+            //     // If no comma, add the entire tag as a single element
+            //     tagArray = tags.trim();
+            // }
+
+            // Convert the array of tags to a string for FormData
+            // const tagsString = tagArray.join(', ');
+
+            formData.append('content', content);
+            formData.append('communityName', selectedCommunity);
+            formData.append('tags', tagsString);
+
+            // Append additional JSON data
+            // formData.append('otherData', JSON.stringify({ key: 'value' }));
 
             const response = await fetch(`${baseEndpoint}${endpoint}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token,
-                    // Add any other headers your backend requires
                 },
-                body: JSON.stringify({
-                    content,
-                    communityName: selectedCommunity,
-                    tags: tags.split(',').map(tag => tag.trim()), // Convert comma-separated tags to an array
-                }),
+                body: formData,
             });
+
             console.log(response);
+
             if (!response.ok) {
                 throw new Error(`Failed to ${isDoubt ? 'create doubt' : 'create post'}`);
             }
@@ -111,6 +148,7 @@ const CreatePost = () => {
                     <div className='mb-6'>
                         <label htmlFor="content" className="block text-gray-700 font-bold mb-2">Content</label>
                         <ReactQuill
+                            ref={quillRef}
                             theme="snow"
                             value={content2}
                             onChange={(value) => setContent(value)}
