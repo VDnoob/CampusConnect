@@ -76,6 +76,7 @@ export default function Feed() {
           id={post._id}
           name={post.createdBy.firstName + ' ' + post.createdBy.lastName}
           tags={post.tags}
+          description={post.community.name}
           message={post.content}
         // photoUrl={post.photoUrl} // Assuming the field is named photoUrl
         />

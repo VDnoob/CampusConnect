@@ -35,7 +35,6 @@ export default function Post({
     const token = localStorage.getItem("Token");
     console.log(id);
     try {
-      // Replace 'YOUR_BACKEND_DELETE_ENDPOINT' with the actual delete endpoint
       const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/delete', {
         method: 'DELETE',
         headers: {
@@ -69,11 +68,14 @@ export default function Post({
           <Avatar src={profileImg} className="h-[35px] w-[35px]" />
           <div className="flex flex-col ml-2.5">
             <h2 className="text-base mt-0">{name}</h2>
-            {tags ? tags.map((tag, index) => (
+            {/* {tags ? tags.map((tag, index) => (
               <span key={index} className='post__tag'>{tag ? tag.name : null}</span>
-            )) : null}
-            <p className="mt-[-2px] text-xs text-[gray]">{description}</p>
+            )) : null} */}
+            <p className="mt-[-2px] text-xs text-[gray]">/{description}</p>
           </div>
+          {tags ? tags.map((tag, index) => (
+            <span key={index} className='post__tag'>{tag ? tag.name : null}</span>
+          )) : null}
           <div className='post__options'>
             <IconButton
               aria-controls="post-menu"
