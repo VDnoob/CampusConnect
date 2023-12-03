@@ -8,6 +8,7 @@ import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function Post({
+  id,
   name,
   description,
   tags,
@@ -30,9 +31,35 @@ export default function Post({
     handleClose();
   };
 
-  const handleDelete = () => {
-    // Add your delete logic here
-    handleClose();
+  const handleDelete = async () => {
+    const token = localStorage.getItem("Token");
+    console.log(id);
+    try {
+      // Replace 'YOUR_BACKEND_DELETE_ENDPOINT' with the actual delete endpoint
+      const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+          // Add any headers or authentication tokens as needed
+        },
+        body: JSON.stringify({
+          postId: id,
+        }), // Sending the post ID to delete
+      });
+      console.log(response);
+      if (!response.ok) {
+        throw new Error('Failed to delete post');
+      }
+
+      // Add any additional logic after successful deletion
+      console.log('Post deleted successfully');
+
+      // Close the menu
+      handleClose();
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
   };
 
   return (

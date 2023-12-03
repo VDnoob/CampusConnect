@@ -7,7 +7,7 @@ import Post from "./Post.jsx";
 
 export default function Feed() {
   const [posts, setPosts] = useState([]);
-  const [allDetails, setAllDetails] = useState([]);
+  // const [allDetails, setAllDetails] = useState([]);
 
   useEffect(() => {
     // Make a GET request to fetch posts
@@ -21,15 +21,15 @@ export default function Feed() {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token,
             // Add any additional headers as needed
-          }
+          },
         });
-        console.log(response);
+        // console.log(response.json());
 
         if (response.ok) {
           const data = await response.json();
-          setAllDetails(data.data);
+          // setAllDetails(data.data);
           console.log(data.data);
-          setPosts(data.data.posts);
+          setPosts(data.data);
           // console.log(posts);
         } else {
           console.error('Failed to fetch posts');
@@ -73,7 +73,8 @@ export default function Feed() {
       {posts.map((post) => (
         <Post
           key={post._id}
-          name={allDetails.firstName + ' ' + allDetails.lastName}
+          id={post._id}
+          name={post.createdBy.firstName + ' ' + post.createdBy.lastName}
           tags={post.tags}
           message={post.content}
         // photoUrl={post.photoUrl} // Assuming the field is named photoUrl

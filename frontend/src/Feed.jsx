@@ -74,7 +74,7 @@ function Feed() {
           name={post.createdBy.firstName + ' ' + post.createdBy.lastName}
           tags={post.tags}
           message={post.content}
-        // photoUrl={post.photoUrl} // Assuming the field is named photoUrl
+          photoUrl={post.fileUrl} // Assuming the field is named photoUrl
         />
       ))}
       {/* <Post
