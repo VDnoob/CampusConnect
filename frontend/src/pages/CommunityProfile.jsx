@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom";
 import ProfileCard from "../CommunityComponents/communityProfile/ProfileCard"
 import Feed from "../CommunityComponents/communityProfile/Feed"
 import UpdateCommunity from "../CommunityComponents/communityProfile/UpdateCommunity"
@@ -7,7 +8,32 @@ import ModeratorsList from "../CommunityComponents/communityProfile/ModeratorsLi
 import Header from "./Header"
 
 export default function CommunityProfile() {
+    const { name } = useParams();
     const [isUpdateFormVisible, setIsUpdateFormVisible] = useState(false);
+    const [communityData, setCommunityData] = useState({})
+    
+    useEffect(() => {
+        const token = localStorage.getItem("Token");
+        const fetchCommunityData = async () => {
+            try {
+                const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/community/getDetails', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                    },
+                    body: JSON.stringify({'name': name})
+                });
+    
+                const data = await response.json();
+                setCommunityData(data.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+    
+        fetchCommunityData();
+    });
 
     const handleUpdateButtonClick = () => {
         setIsUpdateFormVisible(true);
@@ -21,13 +47,13 @@ export default function CommunityProfile() {
                     <UpdateCommunity onCloseForm={() => setIsUpdateFormVisible(false)} />
                 ) : (
                     <div className="w-screen h-screen flex justify-center overflow-auto">
-                        <div className="mainbar w-[45%] m-[15px] ">
-                            <ProfileCard isCreator={true} onUpdateButtonClick={handleUpdateButtonClick} />
-                            <Feed />
+                        <div className="w-[45%] m-[15px] mt-[-75px]">
+                            <ProfileCard communityDetails={communityData} onUpdateButtonClick={handleUpdateButtonClick} />
+                            <Feed communityName={name}/>
                         </div>
-                        <div className="rightbar w-[350px] m-[15px]">
-                            <MembersList />
-                            <ModeratorsList />
+                        <div className="w-[350px] m-[15px]">
+                            <MembersList communityDetails={communityData}/>
+                            <ModeratorsList communityDetails={communityData}/>
                         </div>
                     </div>
                 )}
