@@ -13,7 +13,7 @@ const { likeAnswer, unlikeAnswer } = require("../controllers/AnswerLike");
 
 router.post("/create", auth, createAnswer);
 router.put("/update", auth, updateAnswer);
-router.delete("/delete", auth, deleteAnswer);
+router.post("/delete", auth, deleteAnswer);
 
 router.post("/like", auth, likeAnswer);
 router.post("/unlike", auth, unlikeAnswer);

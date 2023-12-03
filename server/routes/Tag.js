@@ -6,6 +6,6 @@ const { createTag, getAllTags, getTagDetails } = require("../controllers/Tag");
 router.post("/create", auth, createTag);
 
 router.get("/getAllTags", auth, getAllTags);
-router.get("/getTagDetails", auth, getTagDetails);
+router.post("/getTagDetails", auth, getTagDetails);
 
 module.exports = router;

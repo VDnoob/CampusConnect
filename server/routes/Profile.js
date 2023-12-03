@@ -28,7 +28,7 @@ router.get("/getUserPosts", auth, getUserPost);
 router.get("/getUserDoubts", auth, getUserDoubts);
 router.get("/getUserMemberCommunity", auth, getUserMemberCommunity);
 router.get("/getUserEntireDetails", auth, getUserEntireDetails);
-router.get("/getotheruserdetails", auth, getotheruserdetails);
+router.post("/getotheruserdetails", auth, getotheruserdetails);
 router.get("/getUserComments", auth, getUserComments);
 router.get("/getUserAnswer", auth, getUserAnswer);
 
