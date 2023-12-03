@@ -61,7 +61,9 @@ function SignInForm() {
       .then((data) => {
         const token = data.token;
         localStorage.setItem("Token", token);
-
+        localStorage.setItem("UserId", data.user._id);
+        console.log(data);
+        console.log(token,data);
         if (rememberMe) {
           localStorage.setItem("rememberedEmail", email);
           localStorage.setItem("rememberedPassword", password);
