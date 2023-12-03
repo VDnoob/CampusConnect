@@ -49,7 +49,7 @@ function Profilecomp({ onEditClick }) {
         <div className="flex flex-col w-2/5 h-32 justify-between ml-10 ">
           {/* Profile details go here */}
           <div className=" flex justify-between ">
-            <p className="ml-6 pt-4 font-semibold text-2xl">{userData.firstName}</p>
+            <p className="ml-12 pt-4 font-semibold text-2xl">{userData.firstName}</p>
             
           </div>
           <div className="ml-6 mt-2 text-xl">{userData.dateOfbirth}</div>
