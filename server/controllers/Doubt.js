@@ -7,7 +7,7 @@ const Answer = require("../models/Answer");
 
 exports.createDoubt = async (req, res) => {
   try {
-    const { content, communityName, tags } = req.body;
+    let { content, communityName, tags } = req.body;
     const userId = req.user.id;
     if (!userId || !content || !communityName) {
       return res.status(400).json({
@@ -33,46 +33,51 @@ exports.createDoubt = async (req, res) => {
       });
     }
 
+    let fileUrl = "",
+      tagArray = [];
+
+    if (req.files && req.files.file) {
+      const filei = await uploadToCloudinary(req.files.file);
+      fileUrl = filei.secure_url;
+    }
+
     let doubt = await Doubt.create({
       createdBy: userId,
       content,
       community: community._id,
+      fileUrl,
     });
 
-    let doubtObj = await Doubt.findById(doubt._id);
-
-    if (req.files && req.files.file) {
-      const filei = await uploadToCloudinary(req.files.file);
-      doubtObj.fileUrl = filei.secure_url;
-    }
-
     if (tags) {
+      tags = tags.split(",");
       for (let i = 0; i < tags.length; i++) {
         const tag = await Tag.findOne({ name: tags[i] });
         if (!tag) {
           const newTag = await Tag.create({ name: tags[i] });
-          doubtObj.tags.push(newTag._id);
+          tagArray.push(newTag._id);
           newTag.doubts.push(doubt._id);
           await newTag.save();
         } else {
-          doubtObj.tags.push(tag._id);
-          tag.doubts.push(doubtObj._id);
+          tagArray.push(tag._id);
+          tag.doubts.push(doubt._id);
           await tag.save();
         }
       }
     }
+
+    doubt.tags = tagArray;
 
     community.doubts.push(doubt._id);
     createdBy.doubts.push(doubt._id);
 
     await community.save();
     await createdBy.save();
-    await doubtObj.save();
+    await doubt.save();
 
     res.status(200).json({
       success: true,
       message: "Doubt created successfully",
-      data: doubtObj,
+      data: doubt,
     });
   } catch (error) {
     console.log(error);
@@ -225,6 +230,7 @@ exports.getDoubts = async (req, res) => {
       .populate("createdBy")
       .populate("tags")
       .populate("likes")
+      .populate("community")
       .populate({
         path: "answers",
         populate: {

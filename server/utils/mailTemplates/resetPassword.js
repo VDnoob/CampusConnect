@@ -73,3 +73,5 @@ const resetPassword = (url, firstname) => {
   </html>
   `;
 };
+
+module.exports = resetPassword;

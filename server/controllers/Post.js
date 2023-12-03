@@ -7,7 +7,7 @@ const Comment = require("../models/Comment");
 
 exports.createPost = async (req, res) => {
   try {
-    const { content, communityName, tags } = req.body;
+    let { content, communityName, tags } = req.body;
     const userId = req.user.id;
     if (!userId || !content || !communityName) {
       return res.status(400).json({
@@ -32,46 +32,50 @@ exports.createPost = async (req, res) => {
       });
     }
 
+    let fileUrl = "",
+      tagArray = [];
+
+    if (req.files && req.files.file) {
+      const filei = await uploadToCloudinary(req.files.file);
+      fileUrl = filei.secure_url;
+    }
+
     let post = await Post.create({
       createdBy: userId,
       content,
       community: communityDetails._id,
+      fileUrl,
     });
 
-    let postObj = await Post.findById(post._id);
-
-    if (req.files && req.files.file) {
-      const filei = await uploadToCloudinary(req.files.file);
-      postObj.fileUrl = filei.secure_url;
-      console.log(filei.secure_url);
-    }
-
     if (tags) {
+      tags = tags.split(",");
       for (let i = 0; i < tags.length; i++) {
         const tag = await Tag.findOne({ name: tags[i] });
         if (!tag) {
           const newTag = await Tag.create({ name: tags[i] });
-          postObj.tags.push(newTag._id);
+          tagArray.push(newTag._id);
           newTag.posts.push(post._id);
           await newTag.save();
         } else {
-          postObj.tags.push(tag._id);
+          tagArray.push(tag._id);
           tag.posts.push(post._id);
           await tag.save();
         }
       }
     }
-    console.log(postObj);
+
+    post.tags = tagArray;
+
     communityDetails.posts.push(post._id);
     user.posts.push(post._id);
     await communityDetails.save();
     await user.save();
-    await postObj.save();
+    await post.save();
 
     res.status(200).json({
       success: true,
       message: "Post created successfully",
-      data: postObj,
+      data: post,
     });
   } catch (error) {
     console.log(error);
@@ -241,6 +245,7 @@ exports.getPosts = async (req, res) => {
       .populate("createdBy")
       .populate("tags")
       .populate("likes")
+      .populate("community")
       .populate({
         path: "comments",
         populate: {

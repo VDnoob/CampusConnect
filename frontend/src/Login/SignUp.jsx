@@ -14,7 +14,7 @@ function SignUpForm() {
         confirmPassword: "", // New field for confirm password
     });
 
-    const [value, setValue] = useState("Student");
+    const [value, setValue] = useState("student");
 
     const handleChange = (evt) => {
         const value = evt.target.value;

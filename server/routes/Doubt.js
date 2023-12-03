@@ -14,8 +14,8 @@ const { likeDoubt, unlikeDoubt } = require("../controllers/DoubtLike");
 
 router.post("/create", auth, createDoubt);
 router.put("/update", auth, updateDoubt);
-router.delete("/delete", auth, deleteDoubt);
-router.get("/details", auth, getDoubtDetails);
+router.post("/delete", auth, deleteDoubt);
+router.post("/details", auth, getDoubtDetails);
 router.get("/getallDoubts", auth, getDoubts);
 
 router.post("/like", auth, likeDoubt);

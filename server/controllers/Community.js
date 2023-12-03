@@ -1,6 +1,8 @@
 const Community = require("../models/Community");
 const Tag = require("../models/Tag");
 const User = require("../models/User");
+const Post = require("../models/Post");
+const Doubt = require("../models/Doubt");
 const uploadToCloudinary = require("../utils/uploadToCloudinary");
 
 exports.createCommunity = async (req, res) => {
@@ -76,7 +78,7 @@ exports.updateCommunity = async (req, res) => {
     if (!name) {
       return res.status(400).json({
         success: false,
-        message: "Required fields are missing",
+        message: "Community name is required",
       });
     }
     let communityExists = await Community.findOne({ name });
@@ -156,7 +158,7 @@ exports.deleteCommunity = async (req, res) => {
     if (!name) {
       return res.status(200).json({
         success: false,
-        message: "Required fields are missing",
+        message: "Community name is required",
       });
     }
 
@@ -221,10 +223,10 @@ exports.getCommunityDetails = async (req, res) => {
 
     const community = await Community.findOne({ name })
       .populate("tags")
-      .populate("posts")
+      .populate("createdBy")
+      .populate("tags")
       .populate("moderators")
       .populate("members")
-      .populate("doubts")
       .exec();
 
     if (!community) {
@@ -596,8 +598,6 @@ exports.getAllCommunities = async (req, res) => {
       .populate("createdBy")
       .populate("members")
       .populate("moderators")
-      .populate("posts")
-      .populate("doubts")
       .exec();
 
     res.status(200).json({
@@ -608,6 +608,84 @@ exports.getAllCommunities = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getCommunityPosts = async (req, res) => {
+  try {
+    const name = req.body.name;
+
+    if (!name) {
+      return res.status(400).json({
+        success: false,
+        message: "Community name is required",
+      });
+    }
+
+    const community = await Community.findOne({ name });
+
+    if (!community) {
+      return res.status(400).json({
+        success: false,
+        message: "Community not found",
+      });
+    }
+
+    const posts = await Post.find({ community: community._id })
+      .populate("createdBy")
+      .populate("comments")
+      .populate("tags");
+
+    res.status(200).json({
+      success: true,
+      message: "Community posts fetched successfully",
+      data: posts,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getCommunityDoubts = async (req, res) => {
+  try {
+    const name = req.body.name;
+
+    if (!name) {
+      return res.status(400).json({
+        success: false,
+        message: "Community name is required",
+      });
+    }
+
+    const community = await Community.findOne({ name });
+
+    if (!community) {
+      return res.status(400).json({
+        success: false,
+        message: "Community not found",
+      });
+    }
+
+    const doubts = await Doubt.find({ community: community._id })
+      .populate("createdBy")
+      .populate("tags")
+      .populate("comments");
+
+    res.status(200).json({
+      success: true,
+      message: "Community doubts fetched successfully",
+      data: doubts,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
       success: false,
       message: error.message,
     });

@@ -133,6 +133,8 @@ exports.signup = async (req, res) => {
       accountType,
       additionalDetails: profileDetails._id,
       profilePicture: `https://api.dicebear.com/7.x/initials/svg?seed=${firstName} ${lastName}`,
+      coverPicture:
+        "http://myfbcovers.com/uploads/covers/2012/01/30/0038fcf02d8d012f4b5a00259003b428/watermarked_cover.png",
     });
 
     return res.status(200).json({

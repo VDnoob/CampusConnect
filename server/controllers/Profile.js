@@ -4,6 +4,7 @@ const User = require("../models/User");
 const uploadToCloudinary = require("../utils/uploadToCloudinary");
 const Comment = require("../models/Comment");
 const Answer = require("../models/Answer");
+const Post = require("../models/Post");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -23,7 +24,7 @@ exports.updateProfile = async (req, res) => {
 
     if (firstName) profile.firstName = firstName;
     if (lastName) profile.lastName = lastName;
-    await user.save();
+    await userDetails.save();
 
     profile.dateOfBirth = dateOfBirth;
     profile.about = about;
@@ -184,7 +185,8 @@ exports.updateProfileCoverPage = async (req, res) => {
 exports.getUserPost = async (req, res) => {
   try {
     const id = req.user.id;
-    const user = await User.findById(id).populate("posts").exec();
+
+    const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({
@@ -192,6 +194,14 @@ exports.getUserPost = async (req, res) => {
         message: "User not found",
       });
     }
+
+    const posts = await Post.find({ createdBy: id })
+      .populate("createdBy")
+      .populate("comments")
+      .populate("likes")
+      .populate("tags")
+      .populate("community")
+      .exec();
 
     res.status(200).json({
       success: true,

@@ -6,11 +6,20 @@ exports.createAnswer = async (req, res) => {
   try {
     const doubtId = req.body.doubtId;
     const { content } = req.body;
+    const userId = req.user.id;
 
     if (!doubtId || !content) {
       return res.status(400).json({
         success: false,
         message: "Required fields are missing",
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
       });
     }
 
