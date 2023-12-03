@@ -73,6 +73,7 @@ function Feed() {
           key={post._id}
           name={post.createdBy.firstName + ' ' + post.createdBy.lastName}
           tags={post.tags}
+          description={post.community.name}
           message={post.content}
           photoUrl={post.fileUrl} // Assuming the field is named photoUrl
         />
