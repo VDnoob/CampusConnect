@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Profilecomp({ onEditClick }) {
 
-  const [userData, setUserData] = useState({ firstName: '', email: '' , lastName: '', dateOfBirth:'', about: '', ProfilePicture: '', ProfileCoverPage:''});
+  const [userData, setUserData] = useState({ firstName: '',  lastName: '',  profilePicture: '', coverPicture:'', dateOfbirth:''});
   const navigate = useNavigate(); 
     useEffect(() => {
         const token = localStorage.getItem("Token");
@@ -34,22 +34,25 @@ function Profilecomp({ onEditClick }) {
     <div className="">
       <div>
         <img
-          src={"./src/assets/profile.png"}
+          src={userData.coverPicture}
           className="mt-4 mb-4 rounded-xl w-full px-48 h-40"
-          alt="Profile"
+          alt="ProfileCoverPage"
         />
       </div>
       <div className="flex mr-0">
         <div className="ml-48 mt-4 pl-8">
-          <img className="w-32 h-32 bg-blue-100 rounded-full border-2 border-2xl border-black" />
+          <img src={userData.profilePicture} 
+            className="w-32 h-32 bg-blue-100 rounded-full border-2 border-2xl border-black"
+            alt="ProfilePicture"
+            />
         </div>
         <div className="flex flex-col w-2/5 h-32 justify-between ml-10 ">
           {/* Profile details go here */}
           <div className=" flex justify-between ">
-            <p className="ml-6 pt-4 font-semibold text-2xl">Name</p>
-            <p className="pt-4 font-normal text-xl">Gandhinagar, Gujarat</p>
+            <p className="ml-6 pt-4 font-semibold text-2xl">{userData.firstName}</p>
+            
           </div>
-          <div className="ml-6 mt-2 text-xl">Freelance UI/UX Designer</div>
+          <div className="ml-6 mt-2 text-xl">{userData.dateOfbirth}</div>
           <div className="flex justify-start items-center space-x-16 ">
             <button
               onClick={onEditClick}
