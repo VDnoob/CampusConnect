@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import './Feed.css'
-import CreateIcon from '@mui/icons-material/Create';
-import InputOption from './InputOption.jsx';
-import ImageIcon from '@mui/icons-material/Image';
-import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
-import { Margin } from '@mui/icons-material';
-import Post from './Post.jsx';
+import React, { useState, useEffect } from "react";
+import "./Feed.css";
+import CreateIcon from "@mui/icons-material/Create";
+import InputOption from "./InputOption.jsx";
+import ImageIcon from "@mui/icons-material/Image";
+import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
+import { Margin } from "@mui/icons-material";
+import Post from "./Post.jsx";
 import { Link } from "react-router-dom";
-
 
 function Feed() {
   const [posts, setPosts] = useState([]);
@@ -20,14 +19,17 @@ function Feed() {
     // console.log(token);
     const fetchPosts = async () => {
       try {
-        const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/getAllPosts', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-            // Add any additional headers as needed
+        const response = await fetch(
+          "https://campusconnectbackend.onrender.com/api/v1/post/getAllPosts",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+              // Add any additional headers as needed
+            },
           }
-        });
+        );
         // console.log(response.json());
 
         if (response.ok) {
@@ -35,10 +37,10 @@ function Feed() {
           console.log(data.data);
           setPosts(data.data);
         } else {
-          console.error('Failed to fetch posts');
+          console.error("Failed to fetch posts");
         }
       } catch (error) {
-        console.error('Error during fetch:', error);
+        console.error("Error during fetch:", error);
       }
     };
 
@@ -51,14 +53,17 @@ function Feed() {
     // console.log(token);
     const fetchDoubts = async () => {
       try {
-        const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/doubt/getallDoubts', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-            // Add any additional headers as needed
+        const response = await fetch(
+          "https://campusconnectbackend.onrender.com/api/v1/doubt/getallDoubts",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+              // Add any additional headers as needed
+            },
           }
-        });
+        );
         // console.log(response.json());
 
         if (response.ok) {
@@ -66,10 +71,10 @@ function Feed() {
           console.log(data2.data);
           setDoubts(data2.data);
         } else {
-          console.error('Failed to fetch posts');
+          console.error("Failed to fetch posts");
         }
       } catch (error) {
-        console.error('Error during fetch:', error);
+        console.error("Error during fetch:", error);
       }
     };
 
@@ -77,26 +82,31 @@ function Feed() {
   }, []);
 
   return (
-    <div className='feed'>
-      <div className='feed__inputContainer'>
-        <div className='feed__input'>
-          <div className='createIcon_container'>
+    <div className="feed">
+      <div className="feed__inputContainer">
+        <div className="feed__input">
+          <div className="createIcon_container">
             <CreateIcon />
           </div>
-          <form >
-            <button id="startPostButton" type='text' placeholder='Start a post'>
-              <Link to="/CreatePost" className="noUnderlineLink">Start a post</Link>
+          <form>
+            <button id="startPostButton" type="text" placeholder="Start a post">
+              <Link to="/CreatePost" className="noUnderlineLink">
+                Start a post
+              </Link>
             </button>
             <Link to="/CreatePost" className="link-style">
-              <button type='submit' id='bt2'>
+              <button type="submit" id="bt2">
                 Send
               </button>
             </Link>
           </form>
         </div>
 
-        <div className='feed__inputOptions'>
-          <Link to="/CreatePost" className="noUnderlineLink"> <InputOption Icon={ImageIcon} title='Photo' color='#70B5F9' /> </Link>
+        <div className="feed__inputOptions">
+          <Link to="/CreatePost" className="noUnderlineLink">
+            {" "}
+            <InputOption Icon={ImageIcon} title="Photo" color="#70B5F9" />{" "}
+          </Link>
           {/* <InputOption Icon={SubscriptionsIcon} title='Video' color='#E7A33E' /> */}
         </div>
       </div>
@@ -104,24 +114,32 @@ function Feed() {
       {posts.map((post) => (
         <Post
           key={post._id}
-          name={post.createdBy.firstName + ' ' + post.createdBy.lastName}
-          description={post.community.name}
+          name={post.createdBy.firstName + " " + post.createdBy.lastName}
+          description={
+            post.community ? post.community.name : "Deleted Community"
+          }
           tags={post.tags}
           message={post.content}
           photoUrl={post.fileUrl} // Assuming the field is named photoUrl
         />
       ))}
-      {doubts ? doubts.map((doubts) => (
-        <Post
-          key={doubts._id}
-          name={doubts.createdBy.firstName + ' ' + doubts.createdBy.lastName}
-          description={doubts.community.name}
-          tags={doubts.tags}
-          doubts={true}
-          message={doubts.content}
-          photoUrl={doubts.fileUrl} // Assuming the field is named photoUrl
-        />
-      )) : null}
+      {doubts
+        ? doubts.map((doubts) => (
+            <Post
+              key={doubts._id}
+              name={
+                doubts.createdBy.firstName + " " + doubts.createdBy.lastName
+              }
+              description={
+                doubts.community ? doubts.community.name : "Deleted Community"
+              }
+              tags={doubts.tags}
+              doubts={true}
+              message={doubts.content}
+              photoUrl={doubts.fileUrl} // Assuming the field is named photoUrl
+            />
+          ))
+        : null}
       {/* <Post
         name="Jeel Viradiya"
         description="DAIICT'25 | Competitve Programmer"
@@ -145,9 +163,8 @@ function Feed() {
         description="DAIICT'25 | Competitve Programmer"
         message="Hello everyone, My name is jeel and I am a student of Daiict."
       /> */}
-
     </div>
-  )
+  );
 }
 
 export default Feed;

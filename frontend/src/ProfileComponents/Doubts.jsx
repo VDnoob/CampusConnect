@@ -1,50 +1,52 @@
 import CreateIcon from "@mui/icons-material/Create";
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import InputOption from "./InputOption.jsx";
 import ImageIcon from "@mui/icons-material/Image";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import Post from "./Post.jsx";
 
 export default function Doubts() {
-    //   const [posts, setPosts] = useState([]);
-    const [doubts, setDoubts] = useState([]);
-    // const [allDetails, setAllDetails] = useState([]);
+  //   const [posts, setPosts] = useState([]);
+  const [doubts, setDoubts] = useState([]);
+  // const [allDetails, setAllDetails] = useState([]);
 
+  useEffect(() => {
+    // Make a GET request to fetch posts
+    const token = localStorage.getItem("Token");
+    // console.log(token);
+    const fetchDoubts = async () => {
+      try {
+        const response = await fetch(
+          "https://campusconnectbackend.onrender.com/api/v1/profile/getUserDoubts",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+              // Add any additional headers as needed
+            },
+          }
+        );
+        // console.log(response.json());
 
-    useEffect(() => {
-        // Make a GET request to fetch posts
-        const token = localStorage.getItem("Token");
-        // console.log(token);
-        const fetchDoubts = async () => {
-            try {
-                const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/getUserDoubts', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token,
-                        // Add any additional headers as needed
-                    }
-                });
-                // console.log(response.json());
+        if (response.ok) {
+          const data2 = await response.json();
+          console.log(data2.data);
+          setDoubts(data2.data);
+        } else {
+          console.error("Failed to fetch posts");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
 
-                if (response.ok) {
-                    const data2 = await response.json();
-                    console.log(data2.data);
-                    setDoubts(data2.data);
-                } else {
-                    console.error('Failed to fetch posts');
-                }
-            } catch (error) {
-                console.error('Error during fetch:', error);
-            }
-        };
+    fetchDoubts();
+  }, []);
 
-        fetchDoubts();
-    }, []);
-
-    return (
-        <div className="flex-[0.2] ml-24 w-3/5">
-            {/* <div className='bg-[white] mt-2.5 mb-5 pb-5 p-2.5 rounded-[10px]'>
+  return (
+    <div className="flex-[0.2] ml-24 w-3/5">
+      {/* <div className='bg-[white] mt-2.5 mb-5 pb-5 p-2.5 rounded-[10px]'>
         <div className='ml-[2vh] mt-[1vh]'>
           <div className='border flex text-[gray] h-[5vh] pl-[15px] p-2.5 rounded-[30px] border-solid border-[lightgray]'>
             <CreateIcon />
@@ -71,19 +73,23 @@ export default function Doubts() {
           <InputOption Icon={SubscriptionsIcon} title='Video' color='#E7A33E' />
         </div>
       </div> */}
-            {doubts ? doubts.map((post) => (
-                <Post
-                    key={post._id}
-                    id={post._id}
-                    name={post.createdBy.firstName + ' ' + post.createdBy.lastName}
-                    tags={post.tags}
-                    doubts={true}
-                    description={post.community.name}
-                    message={post.content}
-                // photoUrl={post.photoUrl} // Assuming the field is named photoUrl
-                />
-            )) : null}
-            {/* 
+      {doubts
+        ? doubts.map((post) => (
+            <Post
+              key={post._id}
+              id={post._id}
+              name={post.createdBy.firstName + " " + post.createdBy.lastName}
+              tags={post.tags}
+              doubts={true}
+              description={
+                post.community ? post.community.name : "Deleted Community"
+              }
+              message={post.content}
+              // photoUrl={post.photoUrl} // Assuming the field is named photoUrl
+            />
+          ))
+        : null}
+      {/* 
       <Post
         name="Narendra Modi"
         description="Started with chai, now stirring policies"
@@ -111,6 +117,6 @@ export default function Doubts() {
         message="Imran Khan's playbook: swing in cricket, swing in politics – some things never change. Is he running a country or just another innings?"
         profileImg="https://static.toiimg.com/photo/msid-76340696,imgsize-37436/76340696.jpg"
       /> */}
-        </div>
-    );
+    </div>
+  );
 }
