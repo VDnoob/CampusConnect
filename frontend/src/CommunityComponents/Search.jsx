@@ -121,7 +121,7 @@ export default function CombinedComponent() {
           <button
             type="button"
             onClick={handleCreateCommunityClick}
-            className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-4 py-2 mt-4 ml-80"
+            className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-4 py-2 mt-4"
           >
             Create Community
           </button>

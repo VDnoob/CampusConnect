@@ -55,15 +55,15 @@ export default function Doubts({ communityName }) {
         doubts.map((doubt) => (
           <PostTemplate
             key={doubt._id}
+            id={doubt._id}
             name={doubt.createdBy.firstName + " " + doubt.createdBy.lastName}
             profileImg={doubt.createdBy.profilePicture}
             tags={doubt.tags}
             message={doubt.content}
+            photoUrl={doubt.fileUrl}
             likes={doubt.likes.length}
             onDelete={() => handleDelete(doubt.id)}
-            onUpdate={(updatedMessage) =>
-              handleUpdate(doubt.id, updatedMessage)
-            }
+            onUpdate={(updatedMessage) => handleUpdate(doubt.id, updatedMessage)}
           />
         ))
       ) : (

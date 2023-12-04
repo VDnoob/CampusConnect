@@ -49,10 +49,12 @@ export default function Posts({ communityName }) {
         posts.map((post) => (
           <PostTemplate
             key={post._id}
+            id={post._id}
             name={post.createdBy.firstName + " " + post.createdBy.lastName}
             profileImg={post.createdBy.profilePicture}
             tags={post.tags}
             message={post.content}
+            photoUrl={post.fileUrl}
             likes={post.likes.length}
             onDelete={() => handleDelete(post.id)}
             onUpdate={(updatedMessage) => handleUpdate(post.id, updatedMessage)}
