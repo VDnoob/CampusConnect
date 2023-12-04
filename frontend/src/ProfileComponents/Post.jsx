@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import '../Post.css';
-import { Avatar, Menu, MenuItem, IconButton } from '@mui/material';
-import InputOption from './InputOption';
-import SmsRoundedIcon from '@mui/icons-material/SmsRounded';
-import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Typography from '@mui/material/Typography';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
+import React, { useState } from "react";
+import "../Post.css";
+import { Avatar, Menu, MenuItem, IconButton } from "@mui/material";
+import InputOption from "./InputOption";
+import SmsRoundedIcon from "@mui/icons-material/SmsRounded";
+import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Typography from "@mui/material/Typography";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 
 export default function Post({
   id,
@@ -36,25 +36,25 @@ export default function Post({
 
   const [liked, setLiked] = useState(false);
   const [numOfLikes, setNumOfLikes] = useState(0);
-  const [likeColor, setLikeColor] = useState('gray');
+  const [likeColor, setLikeColor] = useState("gray");
 
   const changeLikeButton = () => {
     if (liked) {
       setNumOfLikes(numOfLikes - 1);
       setLiked(false);
-      setLikeColor('gray');
+      setLikeColor("gray");
     } else {
       setNumOfLikes(numOfLikes + 1);
       setLiked(true);
-      setLikeColor('#3480cd');
+      setLikeColor("#3480cd");
     }
   };
-
 
   const handleDelete = async () => {
     const token = localStorage.getItem("Token");
     console.log(id);
     try {
+<<<<<<< Updated upstream
       const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/delete', {
         method: 'POST',
         headers: {
@@ -67,17 +67,34 @@ export default function Post({
         }), // Sending the post ID to delete
       });
       console.log(response);
+=======
+      const response = await fetch(
+        "https://campusconnectbackend.onrender.com/api/v1/post/delete",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+            // Add any headers or authentication tokens as needed
+          },
+          body: JSON.stringify({
+            postId: id,
+          }), // Sending the post ID to delete
+        }
+      );
+      console.log(response.json());
+>>>>>>> Stashed changes
       if (!response.ok) {
-        throw new Error('Failed to delete post');
+        throw new Error("Failed to delete post");
       }
 
       // Add any additional logic after successful deletion
-      console.log('Post deleted successfully');
+      console.log("Post deleted successfully");
 
       // Close the menu
       handleClose();
     } catch (error) {
-      console.error('Error deleting post:', error);
+      console.error("Error deleting post:", error);
     }
   };
 
@@ -93,24 +110,28 @@ export default function Post({
             )) : null} */}
             <p className="mt-[-2px] text-xs text-[gray]">/{description}</p>
           </div>
-          {tags ? tags.map((tag, index) => (
-            <span key={index} className='post__tag'>{tag ? tag.name : null}</span>
-          )) : null}
-          <div className='doubts_info'>
+          {tags
+            ? tags.map((tag, index) => (
+                <span key={index} className="post__tag">
+                  {tag ? tag.name : null}
+                </span>
+              ))
+            : null}
+          <div className="doubts_info">
             {doubts ? (
-              <Typography variant="caption" className='post__doubtTag'>
+              <Typography variant="caption" className="post__doubtTag">
                 Doubt
               </Typography>
             ) : null}
           </div>
 
-          <div className='post__options'>
+          <div className="post__options">
             <IconButton
               aria-controls="post-menu"
               aria-haspopup="true"
               onClick={handleClick}
-              className='post__moreIcon'
-              style={{ marginLeft: '20' }}
+              className="post__moreIcon"
+              style={{ marginLeft: "20" }}
             >
               <MoreVertIcon />
             </IconButton>
@@ -131,8 +152,17 @@ export default function Post({
         </div>
 
         <div className="flex justify-evenly">
+<<<<<<< Updated upstream
           <div className='likeButton' onClick={changeLikeButton}>
             <InputOption Icon={liked ? ThumbUpIcon : ThumbUpAltOutlinedIcon} title={'Like'} color={likeColor} />
+=======
+          <div className="likeButton" onClick={changeLikeButton}>
+            <InputOption
+              Icon={liked ? ThumbUpIcon : ThumbUpAltOutlinedIcon}
+              title={"Like"}
+              color={likeColor}
+            />
+>>>>>>> Stashed changes
           </div>
           <InputOption Icon={SmsRoundedIcon} title="Comment" color="gray" />
         </div>

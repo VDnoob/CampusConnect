@@ -84,6 +84,10 @@ export default function Feed() {
           }
           message={post.content}
           photoUrl={post.fileUrl} // Assuming the field is named photoUrl
+<<<<<<< Updated upstream
+=======
+          profileImg={post.createdBy.profilePicture}
+>>>>>>> Stashed changes
         />
       ))}
       {/* 

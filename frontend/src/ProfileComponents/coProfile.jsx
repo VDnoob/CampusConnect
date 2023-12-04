@@ -1,56 +1,65 @@
 // Profile.jsx
-import React, {useState, useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Profilecomp({ onEditClick }) {
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    profilePicture: "",
+    coverPicture: "",
+    dateOfbirth: "",
+  });
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("Token");
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://campusconnectbackend.onrender.com/api/v1/profile/getUserEntireDetails",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
 
-  const [userData, setUserData] = useState({ firstName: '',  lastName: '',  profilePicture: '', coverPicture:'', dateOfbirth:''});
-  const navigate = useNavigate(); 
-    useEffect(() => {
-        const token = localStorage.getItem("Token");
-        const fetchData = async () => {
-            try {
-                const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/getUserEntireDetails', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token,
-                    },
-                });
+        const data = await response.json();
+        // console.log(data.data);
+        setUserData(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("Error fetching user details. Please try again later.");
+      }
+    };
 
-                const data = await response.json();
-                // console.log(data.data);
-                setUserData(data.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                alert('Error fetching user details. Please try again later.');
-            }
-        };
-
-        fetchData();
-    }, []);
+    fetchData();
+  }, []);
   return (
     <div className="">
       <div>
         <img
           src={userData.coverPicture}
-          className="mt-4 mb-4 rounded-xl w-full px-48 h-40"
+          className="mt-4 mb-4 rounded-xl w-full px-48 h-40 object-cover"
           alt="ProfileCoverPage"
         />
       </div>
       <div className="flex mr-0">
         <div className="ml-48 mt-4 pl-8">
-          <img src={userData.profilePicture} 
+          <img
+            src={userData.profilePicture}
             className="w-32 h-32 bg-blue-100 rounded-full border-2 border-2xl border-black"
             alt="ProfilePicture"
-            />
+          />
         </div>
         <div className="flex flex-col w-2/5 h-32 justify-between ml-10 ">
           {/* Profile details go here */}
           <div className=" flex justify-between ">
-            <p className="ml-12 pt-4 font-semibold text-2xl">{userData.firstName} {userData.lastName}</p>
-            
+            <p className="ml-12 pt-4 font-semibold text-2xl">
+              {userData.firstName} {userData.lastName}
+            </p>
           </div>
           <div className="ml-6 mt-2 text-xl">{userData.dateOfbirth}</div>
           <div className="flex justify-start items-center space-x-16 ">
@@ -73,17 +82,13 @@ function Profilecomp({ onEditClick }) {
               Doubts Asked
             </button> */}
           </div>
-
         </div>
-
-
       </div>
     </div>
   );
 }
 
 export default Profilecomp;
-
 
 // // Profilecomp.jsx
 // import React from "react";
@@ -125,4 +130,3 @@ export default Profilecomp;
 // }
 
 // export default Profilecomp;
-

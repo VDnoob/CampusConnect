@@ -71,6 +71,7 @@ export default function Doubts() {
           <InputOption Icon={SubscriptionsIcon} title='Video' color='#E7A33E' />
         </div>
       </div> */}
+<<<<<<< Updated upstream
       {doubts ? doubts.map((doubts) => (
         <Post
           key={doubts._id}
@@ -85,6 +86,26 @@ export default function Doubts() {
           photoUrl={doubts.photoUrl} // Assuming the field is named photoUrl
         />
       )) : null}
+=======
+      {doubts
+        ? doubts.map((post) => (
+            <Post
+              key={post._id}
+              id={post._id}
+              name={post.createdBy.firstName + " " + post.createdBy.lastName}
+              tags={post.tags}
+              doubts={true}
+              description={
+                post.community ? post.community.name : "Deleted Community"
+              }
+              message={post.content}
+              photoUrl={post.fileUrl} // Assuming the field is named photoUrl
+              profileImg={post.createdBy.profilePicture}
+              // photoUrl={post.photoUrl} // Assuming the field is named photoUrl
+            />
+          ))
+        : null}
+>>>>>>> Stashed changes
       {/* 
       <Post
         name="Narendra Modi"

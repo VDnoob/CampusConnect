@@ -121,6 +121,7 @@ function Feed() {
           tags={post.tags}
           message={post.content}
           photoUrl={post.fileUrl} // Assuming the field is named photoUrl
+          profilePicture={post.createdBy.profilePicture}
         />
       ))}
       {doubts
@@ -137,6 +138,7 @@ function Feed() {
               doubts={true}
               message={doubts.content}
               photoUrl={doubts.fileUrl} // Assuming the field is named photoUrl
+              profilePicture={doubts.createdBy.profilePicture}
             />
           ))
         : null}
