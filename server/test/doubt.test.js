@@ -3,31 +3,30 @@ let chaiHttp = require('chai-http');
 let should = chai.should(); 
 chai.use(chaiHttp);
 
-describe('Testing Post Controllers', () => {
+describe('Testing Doubt Controllers', () => {
   const host = 'http://http://localhost:5173';
 
-
-  it('Create Post - Valid Input', (done) => {
+  it('Create Doubt - Valid Input', (done) => {
     chai
       .request(host)
-      .post(' /post/createPost')
+      .post(' /doubt/createDoubt')
       .send({
-        content: 'Sample post content',
+        content: 'Sample doubt content',
         communityName: 'Sample Community',
         tags: 'tag1, tag2',
         userId: 'sampleUserId',
       })
       .end((err, res) => {
         res.should.have.status(200);
-        // Add assertions to check if the post is created successfully
+        // Add assertions to check if the doubt is created successfully
         done();
       });
   });
 
-  it('Create Post - Invalid Input', (done) => {
+  it('Create Doubt - Invalid Input', (done) => {
     chai
       .request(host)
-      .post(' /post/createPost')
+      .post(' /doubt/createDoubt')
       .send({
         // Missing required fields
       })
@@ -38,98 +37,98 @@ describe('Testing Post Controllers', () => {
       });
   });
 
-  it('Update Post - Valid Input', (done) => {
+  it('Update Doubt - Valid Input', (done) => {
     chai
       .request(host)
-      .put(' /post/updatePost')
+      .put(' /doubt/updateDoubt')
       .send({
-        postId: 'samplePostId',
-        content: 'Updated post content',
+        doubtId: 'sampleDoubtId',
+        content: 'Updated doubt content',
       })
       .end((err, res) => {
         res.should.have.status(200);
-        // Add assertions to check if the post is updated successfully
+        // Add assertions to check if the doubt is updated successfully
         done();
       });
   });
 
-  it('Update Post - Invalid Post ID', (done) => {
+  it('Update Doubt - Invalid Doubt ID', (done) => {
     chai
       .request(host)
-      .put(' /post/updatePost')
+      .put(' /doubt/updateDoubt')
       .send({
-        // Invalid or non-existent post ID
+        // Invalid or non-existent doubt ID
       })
       .end((err, res) => {
         res.should.have.status(404);
-        // Add assertions to check for error handling when post ID is invalid
+        // Add assertions to check for error handling when doubt ID is invalid
         done();
       });
   });
 
-  it('Delete Post - Valid Input', (done) => {
+  it('Delete Doubt - Valid Input', (done) => {
     chai
       .request(host)
-      .delete(' /post/deletePost')
+      .delete(' /doubt/deleteDoubt')
       .send({
-        postId: 'samplePostId',
+        doubtId: 'sampleDoubtId',
       })
       .end((err, res) => {
         res.should.have.status(200);
-        // Add assertions to check if the post is deleted successfully
+        // Add assertions to check if the doubt is deleted successfully
         done();
       });
   });
 
-  it('Delete Post - Invalid Post ID', (done) => {
+  it('Delete Doubt - Invalid Doubt ID', (done) => {
     chai
       .request(host)
-      .delete(' /post/deletePost')
+      .delete(' /doubt/deleteDoubt')
       .send({
-        // Invalid or non-existent post ID
+        // Invalid or non-existent doubt ID
       })
       .end((err, res) => {
         res.should.have.status(404);
-        // Add assertions to check for error handling when post ID is invalid
+        // Add assertions to check for error handling when doubt ID is invalid
         done();
       });
   });
 
-  it('Get Post Details - Valid Input', (done) => {
+  it('Get Doubt Details - Valid Input', (done) => {
     chai
       .request(host)
-      .get(' /post/getPostDetails')
+      .get(' /doubt/getDoubtDetails')
       .send({
-        postId: 'samplePostId',
+        doubtId: 'sampleDoubtId',
       })
       .end((err, res) => {
         res.should.have.status(200);
-        // Add assertions to check if the post details are fetched successfully
+        // Add assertions to check if the doubt details are fetched successfully
         done();
       });
   });
 
-  it('Get Post Details - Invalid Post ID', (done) => {
+  it('Get Doubt Details - Invalid Doubt ID', (done) => {
     chai
       .request(host)
-      .get(' /post/getPostDetails')
+      .get(' /doubt/getDoubtDetails')
       .send({
-        // Invalid or non-existent post ID
+        // Invalid or non-existent doubt ID
       })
       .end((err, res) => {
         res.should.have.status(404);
-        // Add assertions to check for error handling when post ID is invalid
+        // Add assertions to check for error handling when doubt ID is invalid
         done();
       });
   });
 
-  it('Get Posts', (done) => {
+  it('Get Doubts', (done) => {
     chai
       .request(host)
-      .get(' /post/getPosts')
+      .get(' /doubt/getDoubts')
       .end((err, res) => {
         res.should.have.status(200);
-        // Add assertions to check if posts are fetched successfully
+        // Add assertions to check if doubts are fetched successfully
         done();
       });
   });

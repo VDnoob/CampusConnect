@@ -3,22 +3,19 @@ let chaiHttp = require('chai-http');
 let should = chai.should(); 
 chai.use(chaiHttp);
 
-describe('Testing route company/signup', () => {
+describe('Testing route company/changePassword', () => {
   const host = 'http://http://localhost:5173';
-  const path = '/auth/signup';
+  const path = '/auth/changePassword';
 
-  it('Valid signup', (done) => {
+  it('Valid change password', (done) => {
     chai
       .request(host)
       .post(path)
       .send({
-        firstName: 'John',
-        lastName: 'Doe',
         email: 'johndoe@example.com',
-        password: 'password123',
-        confirmPassword: 'password123',
-        otp: '123456',
-        accountType: 'user',
+        oldPassword: 'oldpassword',
+        newPassword: 'newpassword',
+        confirmNewPassword: 'newpassword',
       })
       .end((err, res) => {
         res.should.have.status(200);
@@ -26,17 +23,14 @@ describe('Testing route company/signup', () => {
       });
   });
 
-  it('Invalid signup (missing required fields)', (done) => {
+  it('Invalid change password (missing required fields)', (done) => {
     chai
       .request(host)
       .post(path)
       .send({
-        firstName: 'John',
         email: 'johndoe@example.com',
-        password: 'password123',
-        confirmPassword: 'password123',
-        otp: '123456', 
-        accountType: 'user',
+        oldPassword: 'oldpassword',
+        newPassword: 'newpassword',
       })
       .end((err, res) => {
         res.should.have.status(403);
