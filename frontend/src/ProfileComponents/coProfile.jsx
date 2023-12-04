@@ -60,6 +60,12 @@ function Profilecomp({ onEditClick }) {
             >
               Edit Profile
             </button>
+            <button
+        
+        className="w-32 h-12 rounded-3xl mt-4 bg-red-500 border-2 border-black hover:bg-red-600 hover:border-black hover:text-white text-white cursor-pointer"
+      >
+        Delete Profile
+      </button>
             {/* <button className="w-28 h-12 rounded-3xl mt-4 bg-blue-200 border-2 border-black hover:bg-blue-400 hover:text-white cursor-pointer">
               Your Posts
             </button>
