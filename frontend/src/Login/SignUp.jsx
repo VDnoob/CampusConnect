@@ -205,9 +205,9 @@ function SignUpForm() {
                 ) : (
                     <button type="submit" id="bt">Sign Up</button>
                 )}
-                <div className="alt-s">
+                {/* <div className="alt-s">
                     <span>OR</span>
-                </div>
+                </div> */}
                 {/* <div className="social-container">
                     <a href="#" className="social">
                         <i className="fab fa-google"></i>

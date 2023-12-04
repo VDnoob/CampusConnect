@@ -6,6 +6,7 @@ import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import SmsRoundedIcon from '@mui/icons-material/SmsRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Typography from '@mui/material/Typography';
 
 export default function Post({
   id,
@@ -14,6 +15,7 @@ export default function Post({
   tags,
   message,
   photoUrl,
+  doubts,
   profileImg,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -76,6 +78,14 @@ export default function Post({
           {tags ? tags.map((tag, index) => (
             <span key={index} className='post__tag'>{tag ? tag.name : null}</span>
           )) : null}
+          <div className='doubts_info'>
+            {doubts ? (
+              <Typography variant="caption" className='post__doubtTag'>
+                Doubt
+              </Typography>
+            ) : null}
+          </div>
+
           <div className='post__options'>
             <IconButton
               aria-controls="post-menu"
