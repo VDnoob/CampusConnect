@@ -19,7 +19,7 @@ export default function YourCommunitiesTab() {
               });
               
               const data = await response.json();
-              console.log(data);
+              // console.log(data);
               setCommunityList(data.data.community);
           } catch (error) {
               console.error('Error fetching data:', error);

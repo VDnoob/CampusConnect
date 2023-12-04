@@ -100,6 +100,7 @@ function SignInForm() {
                 // Now you can use the token as needed
                 localStorage.setItem("Token", token);
                 localStorage.setItem("UserId", data.user._id);
+                localStorage.setItem("UserEmail", data.user.email);
 
                 // If "Remember Me" is checked, save credentials to local storage
                 if (rememberMe) {
