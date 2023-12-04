@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import '../Post.css';
 import { Avatar, Menu, MenuItem, IconButton } from '@mui/material';
 import InputOption from './InputOption';
-import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import SmsRoundedIcon from '@mui/icons-material/SmsRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Typography from '@mui/material/Typography';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 
 export default function Post({
   id,
@@ -32,6 +33,23 @@ export default function Post({
     // Add your update logic here
     handleClose();
   };
+
+  const [liked, setLiked] = useState(false);
+  const [numOfLikes, setNumOfLikes] = useState(0);
+  const [likeColor, setLikeColor] = useState('gray');
+
+  const changeLikeButton = () => {
+    if (liked) {
+      setNumOfLikes(numOfLikes - 1);
+      setLiked(false);
+      setLikeColor('gray');
+    } else {
+      setNumOfLikes(numOfLikes + 1);
+      setLiked(true);
+      setLikeColor('#3480cd');
+    }
+  };
+
 
   const handleDelete = async () => {
     const token = localStorage.getItem("Token");
@@ -113,11 +131,9 @@ export default function Post({
         </div>
 
         <div className="flex justify-evenly">
-          <InputOption
-            Icon={ThumbUpAltOutlinedIcon}
-            title="Like"
-            color="gray"
-          />
+          <div className='likeButton' onClick={changeLikeButton}>
+        <InputOption Icon={liked ? ThumbUpIcon : ThumbUpAltOutlinedIcon} title={'Like'} color={likeColor} />
+        </div>
           <InputOption Icon={SmsRoundedIcon} title="Comment" color="gray" />
         </div>
       </div>
