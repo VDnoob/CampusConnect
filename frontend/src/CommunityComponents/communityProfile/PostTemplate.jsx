@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Avatar } from "@mui/material";
 import InputOption from "./InputOption";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import SmsRoundedIcon from "@mui/icons-material/SmsRounded";
 
 export default function PostTemplate({
+  id,
   name,
   message,
   profileImg,
+  photoUrl,
   onDelete,
   onUpdate,
   tags,
@@ -35,51 +38,51 @@ export default function PostTemplate({
   };
 
   const changeLikeButton = async () => {
-    // const token = localStorage.getItem("Token");
-    // try {
-    //   const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/like', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': 'Bearer ' + token,
-    //     },
-    //     body: JSON.stringify({ postId: '' }),  /* pass the post ID here */
-    //   });
+    const token = localStorage.getItem("Token");
+    try {
+      const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/like', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({ postId: id }), 
+      });
 
-    //   if (response.ok) {
-    //     setLiked(true);
-    //     setNumOfLikes(numOfLikes + 1);
-    //     setLikeColor("#3480cd");
-    //   } else {
-    //     console.error('Failed to like the post');
-    //   }
-    // } catch (error) {
-    //   console.error('Error while liking the post:', error);
-    // }
+      if (response.ok) {
+        setLiked(true);
+        setNumOfLikes(numOfLikes + 1);
+        setLikeColor("#3480cd");
+      } else {
+        console.error('Failed to like the post');
+      }
+    } catch (error) {
+      console.error('Error while liking the post:', error);
+    }
   };
 
   const changeUnlikeButton = async () => {
-    // const token = localStorage.getItem("Token");
-    // try {
-    //   const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/unlike', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': 'Bearer ' + token,
-    //     },
-    //     body: JSON.stringify({ postId: '' }),  /* pass the post ID here */
-    //   });
+    const token = localStorage.getItem("Token");
+    try {
+      const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/unlike', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({ postId: id }),  
+      });
 
-    //   if (response.ok) {
-    //     setLiked(false);
-    //     setNumOfLikes(numOfLikes - 1);
-    //     setLikeColor("gray");
-    //   } else {
-    //     console.error('Failed to unlike the post');
-    //   }
-    // } catch (error) {
-    //   console.error('Error while unliking the post:', error);
-    // }
+      if (response.ok) {
+        setLiked(false);
+        setNumOfLikes(numOfLikes - 1);
+        setLikeColor("gray");
+      } else {
+        console.error('Failed to unlike the post');
+      }
+    } catch (error) {
+      console.error('Error while unliking the post:', error);
+    }
   };
 
   useEffect(() => {
@@ -163,7 +166,7 @@ export default function PostTemplate({
               className="w-full mb-2"
             />
           ) : (
-            <p className="mx-2.5">{message}</p>
+            <p className="mx-2.5">{message}{photoUrl ? <img src={photoUrl} alt='Post' className='post__image' /> : null}</p>
           )}
         </div>
 
