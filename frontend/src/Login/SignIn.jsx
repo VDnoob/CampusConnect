@@ -159,9 +159,9 @@ function SignInForm() {
                     </div>
                 </div>
                 <button>Sign In</button>
-                <div className="alt-s">
+                {/* <div className="alt-s">
                     <span>OR</span>
-                </div>
+                </div> */}
                 {/* <div className="social-container">
                     <!-- <a href="#" class="social"><i className="fab fa-facebook-f"></i></a> -->
                     <a href="#" className="social">
