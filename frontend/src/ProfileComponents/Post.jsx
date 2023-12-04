@@ -108,8 +108,8 @@ export default function Post({
           </div>
         </div>
 
-        <div>
-          <p className="mx-2.5">{message}</p>
+        <div className='post__body'>
+          <p>{message} {photoUrl ? <img src={photoUrl} alt='Post' className='post__image' /> : null}</p>
         </div>
 
         <div className="flex justify-evenly">

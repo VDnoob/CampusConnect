@@ -78,7 +78,7 @@ export default function Feed() {
           tags={post.tags}
           description={post.community.name}
           message={post.content}
-        // photoUrl={post.photoUrl} // Assuming the field is named photoUrl
+          photoUrl={post.fileUrl} // Assuming the field is named photoUrl
         />
       ))}
       {/* 
