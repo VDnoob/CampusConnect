@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 
 function Feed() {
   const [posts, setPosts] = useState([]);
-  const tags2 = ['Hii', 'Bye'];
+  const [doubts, setDoubts] = useState([]);
+  // const tags2 = ['Hii', 'Bye'];
 
   useEffect(() => {
     // Make a GET request to fetch posts
@@ -43,6 +44,38 @@ function Feed() {
 
     fetchPosts();
   }, []);
+
+  useEffect(() => {
+    // Make a GET request to fetch posts
+    const token = localStorage.getItem("Token");
+    // console.log(token);
+    const fetchDoubts = async () => {
+      try {
+        const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/doubt/getallDoubts', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+            // Add any additional headers as needed
+          }
+        });
+        // console.log(response.json());
+
+        if (response.ok) {
+          const data2 = await response.json();
+          console.log(data2.data);
+          setDoubts(data2.data);
+        } else {
+          console.error('Failed to fetch posts');
+        }
+      } catch (error) {
+        console.error('Error during fetch:', error);
+      }
+    };
+
+    fetchDoubts();
+  }, []);
+
   return (
     <div className='feed'>
       <div className='feed__inputContainer'>
@@ -72,12 +105,23 @@ function Feed() {
         <Post
           key={post._id}
           name={post.createdBy.firstName + ' ' + post.createdBy.lastName}
-          tags={post.tags}
           description={post.community.name}
+          tags={post.tags}
           message={post.content}
           photoUrl={post.fileUrl} // Assuming the field is named photoUrl
         />
       ))}
+      {doubts ? doubts.map((doubts) => (
+        <Post
+          key={doubts._id}
+          name={doubts.createdBy.firstName + ' ' + doubts.createdBy.lastName}
+          description={doubts.community.name}
+          tags={doubts.tags}
+          doubts={true}
+          message={doubts.content}
+          photoUrl={doubts.fileUrl} // Assuming the field is named photoUrl
+        />
+      )) : null}
       {/* <Post
         name="Jeel Viradiya"
         description="DAIICT'25 | Competitve Programmer"

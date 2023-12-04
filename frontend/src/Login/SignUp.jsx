@@ -208,14 +208,14 @@ function SignUpForm() {
                 <div className="alt-s">
                     <span>OR</span>
                 </div>
-                <div className="social-container">
+                {/* <div className="social-container">
                     <a href="#" className="social">
                         <i className="fab fa-google"></i>
                     </a>
                     <a href="#" className="social">
                         <i className="fab fa-linkedin-in"></i>
                     </a>
-                </div>
+                </div> */}
             </form>
         </div>
     );

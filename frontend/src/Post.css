@@ -74,3 +74,28 @@
     margin-left: auto;
     /* Move the menu button to the right */
 }
+
+.post_doubt {
+    border: 2px solid red;
+    /* Add your styling for doubts */
+}
+
+/* .post__doubtTag {
+    Style for the doubt tag
+    color: red;
+    font-weight: bold;
+    Add more styles as needed
+} */
+.post__doubtTag {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #80dbff;
+    /* Customize the background color */
+    color: white;
+    /* Customize the text color */
+    border-radius: 4px;
+    /* Add rounded corners if desired */
+    /* margin-right: 8px; */
+    margin-left: 5px;
+    /* Add some spacing to the right of the doubt tag */
+}
