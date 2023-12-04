@@ -32,7 +32,9 @@ function Header() {
         </div>
 
         <div className='header__right__community'>
-          <HeaderOption Icon={GroupsIcon} title="Community" />
+          <Link to="/Home">
+            <HeaderOption Icon={GroupsIcon} title="Community" />
+          </Link>
         </div>
 
         <div className='header__right__messages'>
