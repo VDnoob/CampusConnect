@@ -1,5 +1,5 @@
 import CreateIcon from "@mui/icons-material/Create";
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import InputOption from "./InputOption.jsx";
 import ImageIcon from "@mui/icons-material/Image";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
@@ -32,10 +32,10 @@ export default function Doubts() {
           console.log(data2.data);
           setDoubts(data2.data);
         } else {
-          console.error('Failed to fetch posts');
+          console.error("Failed to fetch posts");
         }
       } catch (error) {
-        console.error('Error during fetch:', error);
+        console.error("Error during fetch:", error);
       }
     };
 
@@ -78,7 +78,9 @@ export default function Doubts() {
           name={doubts.createdBy.firstName + ' ' + doubts.createdBy.lastName}
           tags={doubts.tags}
           doubts={true}
-          description={doubts.community.name}
+          description={
+            doubts.community ? doubts.community.name : "Deleted Community"
+          }
           message={doubts.content}
           photoUrl={doubts.photoUrl} // Assuming the field is named photoUrl
         />
@@ -111,6 +113,7 @@ export default function Doubts() {
         message="Imran Khan's playbook: swing in cricket, swing in politics – some things never change. Is he running a country or just another innings?"
         profileImg="https://static.toiimg.com/photo/msid-76340696,imgsize-37436/76340696.jpg"
       /> */}
+
     </div>
   );
 }

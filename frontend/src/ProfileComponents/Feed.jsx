@@ -1,5 +1,5 @@
 import CreateIcon from "@mui/icons-material/Create";
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import InputOption from "./InputOption.jsx";
 import ImageIcon from "@mui/icons-material/Image";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
@@ -15,14 +15,17 @@ export default function Feed() {
     // console.log(token);
     const fetchPosts = async () => {
       try {
-        const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/getUserPosts', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-            // Add any additional headers as needed
-          },
-        });
+        const response = await fetch(
+          "https://campusconnectbackend.onrender.com/api/v1/profile/getUserPosts",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+              // Add any additional headers as needed
+            },
+          }
+        );
         // console.log(response.json());
 
         if (response.ok) {
@@ -32,10 +35,10 @@ export default function Feed() {
           setPosts(data.data);
           // console.log(posts);
         } else {
-          console.error('Failed to fetch posts');
+          console.error("Failed to fetch posts");
         }
       } catch (error) {
-        console.error('Error during fetch:', error);
+        console.error("Error during fetch:", error);
       }
     };
 
@@ -74,9 +77,11 @@ export default function Feed() {
         <Post
           key={post._id}
           id={post._id}
-          name={post.createdBy.firstName + ' ' + post.createdBy.lastName}
+          name={post.createdBy.firstName + " " + post.createdBy.lastName}
           tags={post.tags}
-          description={post.community.name}
+          description={
+            post.community ? post.community.name : "Deleted Community"
+          }
           message={post.content}
           photoUrl={post.fileUrl} // Assuming the field is named photoUrl
         />
