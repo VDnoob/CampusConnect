@@ -56,7 +56,7 @@ export default function Post({
     console.log(id);
     try {
       const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/delete', {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token,
@@ -132,8 +132,8 @@ export default function Post({
 
         <div className="flex justify-evenly">
           <div className='likeButton' onClick={changeLikeButton}>
-        <InputOption Icon={liked ? ThumbUpIcon : ThumbUpAltOutlinedIcon} title={'Like'} color={likeColor} />
-        </div>
+            <InputOption Icon={liked ? ThumbUpIcon : ThumbUpAltOutlinedIcon} title={'Like'} color={likeColor} />
+          </div>
           <InputOption Icon={SmsRoundedIcon} title="Comment" color="gray" />
         </div>
       </div>
