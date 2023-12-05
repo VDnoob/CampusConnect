@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Avatar } from "@mui/material";
-import donut from "./donuts.png";
-import header_img from "./header_pfp.png";
 import "./Sidebar.css";
 import { Link } from "react-router-dom";
 
@@ -34,10 +32,13 @@ function Sidebar() {
     fetchData();
   }, []);
 
+  console.log(userData.coverPicture);
+
   return (
     <div className="sidebar">
       <div className="sidebar__top">
         <img src={userData.coverPicture} alt="" />
+        
         <Link to="/Profile">
           <Avatar className="sidebar__avatar" src={userData.profilePicture} />
         </Link>

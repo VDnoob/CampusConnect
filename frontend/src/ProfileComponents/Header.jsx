@@ -39,9 +39,9 @@ function Header() {
           </Link>
         </div>
 
-        <div className="header__right__messages">
+        {/* <div className="header__right__messages">
           <HeaderOption Icon={ChatIcon} title="Messages" />
-        </div>
+        </div> */}
 
         <div className="header__right__profile">
           <Link to="/Profile">
@@ -49,27 +49,8 @@ function Header() {
           </Link>
         </div>
 
-        <div className="header__right__menu__container">
-          {/* <HeaderOption Icon={MoreVertIcon} title="Me"/>
-          <div className='dropdown-menu'>
-            <ul>
-              <DropDownItem menuItem={"Log Out"}/>
-            </ul>
-          </div> */}
-        </div>
       </div>
     </div>
-  );
-}
-
-function DropDownItem({ menuItem }) {
-  return (
-    <li className="dropDownItem">
-      <ExitToAppIcon className="exit__icon" />
-      <a href="#" className="menuItem">
-        {menuItem}
-      </a>
-    </li>
   );
 }
 

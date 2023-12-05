@@ -7,6 +7,7 @@ import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import { Margin } from "@mui/icons-material";
 import Post from "./Post.jsx";
 import { Link } from "react-router-dom";
+import CreatePost from './CreatePost.jsx';
 
 function Feed() {
   const [posts, setPosts] = useState([]);
@@ -120,9 +121,13 @@ function Feed() {
           }
           tags={post.tags}
           message={post.content}
-          photoUrl={post.fileUrl} // Assuming the field is named photoUrl
+          photoUrl={post.fileUrl}
+          numLikes={post.likes.length}
+          liked__alr={post.likes.includes(localStorage.getItem("userId")) ? true : false}
+          color={post.likes.includes(localStorage.getItem("userId")) ? '#3480cd' : 'gray'}
+          id={post._id}
           profilePicture={post.createdBy.profilePicture}
-        />
+          />
       ))}
       {doubts
         ? doubts.map((doubts) => (
@@ -137,8 +142,12 @@ function Feed() {
               tags={doubts.tags}
               doubts={true}
               message={doubts.content}
-              photoUrl={doubts.fileUrl} // Assuming the field is named photoUrl
-              profilePicture={doubts.createdBy.profilePicture}
+              photoUrl={doubts.fileUrl}
+              numLikes={doubts.likes.length}
+              liked__alr={doubts.likes.includes(localStorage.getItem("userId")) ? true : false}
+              color={doubts.likes.includes(localStorage.getItem("userId")) ? '#3480cd' : 'gray'}
+              id={doubts._id}
+              profilePicture={doubts.createdBy.profilePicture} // Assuming the field is named photoUrl
             />
           ))
         : null}
@@ -168,5 +177,10 @@ function Feed() {
     </div>
   );
 }
+
+// numLikes={post.likes}
+// liked__alr={post.likes.includes(req.user.id) ? true : false}
+// color={post.likes.includes(req.user.id) ? '#3480cd' : 'gray'} // Assuming the field is named photoUrl
+       
 
 export default Feed;

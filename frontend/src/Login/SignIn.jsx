@@ -118,72 +118,6 @@ function SignInForm() {
       });
   };
 
-<<<<<<< Updated upstream
-                // Now you can use the token as needed
-                localStorage.setItem("Token", token);
-                localStorage.setItem("UserId", data.user._id);
-                localStorage.setItem("UserEmail", data.user.email);
-
-                // If "Remember Me" is checked, save credentials to local storage
-                if (rememberMe) {
-                    localStorage.setItem("rememberedEmail", email);
-                    localStorage.setItem("rememberedPassword", password);
-                }
-
-                // Redirect to the Home page
-                Navigate("/Home");
-            })
-            .catch(error => {
-                // Handle errors
-                alert(`${error.message}: Invalid credentials. Please try again.`);
-                console.error(error);
-            });
-    };
-
-
-    return (
-        <div className="form-container sign-in-container">
-            <form onSubmit={handleOnSubmit} className="form">
-                <div className="logo">
-                    <p>
-                        <img src={img} alt=" " /> Campus connect
-                    </p>
-                </div>
-                <h1>Sign Into Your Account</h1>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    value={state.email}
-                    onChange={handleChange}
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={state.password}
-                    onChange={handleChange}
-                />
-                <div className="con">
-                    <div className="remb">
-                        <label className="label">
-                            <input
-                                type="checkbox"
-                                className="remember"
-                                id="remember"
-                                checked={state.rememberMe}
-                                onChange={handleRememberMeChange}
-                            />{" "}
-                            Remember Me
-                        </label>
-                    </div>
-                    <div className="for-pa">
-                        <Link to="/login/forgotpassword">Forgot password?</Link>
-                    </div>
-                </div>
-                <button>Sign In</button>
-                {/* <div className="alt-s">
-=======
   return (
     <div className="form-container sign-in-container">
       <form onSubmit={handleOnSubmit} className="form">
@@ -226,7 +160,6 @@ function SignInForm() {
         </div>
         <button>Sign In</button>
         {/* <div className="alt-s">
->>>>>>> Stashed changes
                     <span>OR</span>
                 </div> */}
         {/* <div className="social-container">

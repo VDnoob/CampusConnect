@@ -32,20 +32,15 @@ function Header() {
           </Link>
         </div>
 
-<<<<<<< Updated upstream
         <div className='header__right__community'>
           <Link to="/Home">
             <HeaderOption Icon={GroupsIcon} title="Community" />
           </Link>
-=======
-        <div className="header__right__community">
-          <HeaderOption Icon={GroupsIcon} title="Community" />
->>>>>>> Stashed changes
         </div>
 
-        <div className="header__right__messages">
+        {/* <div className="header__right__messages">
           <HeaderOption Icon={ChatIcon} title="Messages" />
-        </div>
+        </div> */}
 
         <div className="header__right__profile">
           <Link to="/Profile">

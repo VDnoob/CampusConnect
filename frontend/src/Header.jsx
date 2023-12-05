@@ -13,6 +13,7 @@ import header_img from "./header_pfp.png";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 function Header() {
+  
   const profilePicture = localStorage.getItem("ProfilePicture");
 
   return (
@@ -39,9 +40,11 @@ function Header() {
           </Link>
         </div>
 
-        <div className="header__right__messages">
-          <HeaderOption Icon={ChatIcon} title="Messages" />
-        </div>
+        {/* <div className='header__right__messages'>
+          <Link to='/Messages'>
+            <HeaderOption Icon={ChatIcon} title="Messages" />
+          </Link>
+        </div> */}
 
         <div className="header__right__profile">
           <Link to="/Profile">
@@ -49,14 +52,6 @@ function Header() {
           </Link>
         </div>
 
-        {/* <div className="header__right__menu__container">
-          {/* <HeaderOption Icon={MoreVertIcon} title="Me"/>
-          <div className='dropdown-menu'>
-            <ul>
-              <DropDownItem menuItem={"Log Out"}/>
-            </ul>
-          </div>
-        </div> */}
       </div>
     </div>
   );
