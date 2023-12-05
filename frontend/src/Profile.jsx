@@ -21,7 +21,6 @@ function Profile() {
 
     const handleBackToApp = () => {
         setShowEdit(false);
-        window.alert("Changes were saved successfully!");
     };
 
     return (
