@@ -21,6 +21,12 @@ function SignUpForm() {
         const name = evt.target.name;
 
         if (name === "firstName" || name === "lastName") {
+            // Check if the input contains only alphabetic characters
+            if (!/^[a-zA-Z]*$/.test(value)) {
+                alert(`${name === "firstName" ? "First" : "Last"} name should contain only alphabetic characters`);
+                return;
+            }
+
             // Check if the first name or last name length exceeds 15 characters
             if (value.length > 15) {
                 // If it does, truncate it to the first 15 characters
@@ -37,11 +43,11 @@ function SignUpForm() {
             }
         } else if (name === "email") {
             // Check if the email length exceeds 30 characters
-            if (value.length > 30) {
+            if (value.length > 35) {
                 // If it does, truncate it to the first 30 characters
                 setState({
                     ...state,
-                    [name]: value.slice(0, 30),
+                    [name]: value.slice(0, 35),
                 });
                 alert("Email should not exceed 30 characters");
             } else {
@@ -159,6 +165,7 @@ function SignUpForm() {
                         className="i1"
                         value={state.firstName}
                         onChange={handleChange}
+                        // onBlur={() => handleBlur("firstName")}
                         placeholder="First Name"
                         required
                     />
@@ -168,6 +175,7 @@ function SignUpForm() {
                         className="i2"
                         value={state.lastName}
                         onChange={handleChange}
+                        // onBlur={() => handleBlur("lastName")}
                         placeholder="Last Name"
                         required
                     />
