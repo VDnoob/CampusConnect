@@ -87,15 +87,6 @@ function Header() {
   );
 }
 
-function DropDownItem({ menuItem }) {
-  return (
-    <li className="dropDownItem">
-      <ExitToAppIcon className="exit__icon" />
-      <a href="#" className="menuItem">
-        {menuItem}
-      </a>
-    </li>
-  );
-}
+
 
 export default Header;

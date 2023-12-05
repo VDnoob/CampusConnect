@@ -17,7 +17,6 @@ router.put("/update", auth, updatePost);
 router.post("/delete", auth, deletePost);
 router.post("/details", auth, getPostDetails);
 router.get("/getAllPosts", auth, getPosts);
-
 router.post("/like", auth, likePost);
 router.post("/unlike", auth, unlikePost);
 

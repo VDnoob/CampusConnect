@@ -53,9 +53,9 @@ function Header() {
           </Link>
         </div>
 
-        <div className="header__right__messages">
+        {/* <div className="header__right__messages">
           <HeaderOption Icon={ChatIcon} title="Messages" />
-        </div>
+        </div> */}
 
         <div className="header__right__profile">
           <Link to="/Profile">

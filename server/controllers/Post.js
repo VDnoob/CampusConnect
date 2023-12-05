@@ -206,18 +206,19 @@ exports.deletePost = async (req, res) => {
 // ===============================================================================================================
 exports.getPostDetails = async (req, res) => {
   try {
-    const postId = req.body.postId;
+    const { postId } = req.body;
 
     const post = await Post.findById(postId)
       .populate("createdBy")
+      .populate("community")
       .populate("tags")
+      .populate("likes")
       .populate({
         path: "comments",
         populate: {
           path: "commentedBy",
         },
-      })
-      .populate("likes");
+      });
 
     if (!post) {
       return res.status(404).json({

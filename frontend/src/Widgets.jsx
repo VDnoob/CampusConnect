@@ -1,24 +1,16 @@
 import React from 'react'
 import './Widgets.css'
 import InfoIcon from '@mui/icons-material/Info';
+import { Link } from "react-router-dom";
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 
 
 function Widgets() {
 
-  // const newsArticle = (heading,subtitle) => (
-  //   <div className='widgets__articles'>
-  //     <div className='widgets_articleLeft'>
-  //       <FiberManualRecordIcon/>
-  //     </div>
-
-  //     <div className='widgets_articleRight'>
-  //       <h4>{heading}</h4>
-  //       <p>{subtitle}</p>
-  //     </div>
-  //   </div>
-  // );
+  const hoverStyles = {
+    color: '#3480cd', // Color to be applied on hover
+  };
 
   return (
     <div className='widgets'>
@@ -33,7 +25,14 @@ function Widgets() {
           We believe that this will help in the growth of the students and will
           help them in their future.
         </p>
+      </div>
 
+      <div className='widget__contact'>
+        <Link to="/ContactUs" >
+          {/* style={{...hoverStyles,color: 'white'}} */}
+          <button>Reach out</button>
+        </Link>
+        
       </div>
       {/* {newsArticle("Google is hiring","Apply now - 9000+ Applicants")}
       {newsArticle("Join IITD for research","Area is SDLC")}
