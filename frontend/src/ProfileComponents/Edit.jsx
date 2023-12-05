@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Edit = ({ onBackToApp }) => {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
-    about: '',
-    lastName: '',
-    firstName: '',
-    profilePicture:'',
-    coverPicture:'',
-    collegeBranch: 'empty',
-    collegeName: 'empty',
-    dateOfbirth: '',
+   
 
 
     
@@ -53,11 +48,12 @@ const Edit = ({ onBackToApp }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-   setUserData({
-      ...userData,
+    setUserData((prevUserData) => ({
+      ...prevUserData,
       [name]: value,
-    });
+    }));
   };
+  
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -67,16 +63,86 @@ const Edit = ({ onBackToApp }) => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onBackToApp();
-    // Handle form submission, e.g., send data to a server
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log('Submit');
+  const confirmSave = window.confirm('Do you want to save changes?');
+
+  if (confirmSave) {
+    try {
+      const token = localStorage.getItem('Token');
+      if (!token) {
+        console.error('Authentication token not found');
+        return;
+      }
+      console.log(token);
+
+      const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/profile/updateProfile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify(userData, about,),
+      });
+
+      if (response.ok) {
+        // Update successful
+        // Fetch the updated user data
+        const fetchDataResponse = await fetch(
+          'https://campusconnectbackend.onrender.com/api/v1/profile/getUserEntireDetails',
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + token,
+            },
+          }
+        );
+
+        const updatedData = await fetchDataResponse.json();
+        if (updatedData.data) {
+          // Update the state with the new user data
+          setUserData(updatedData.data);
+          console.log(updatedData);
+          onBackToApp();
+        } else {
+          console.warn('Received undefined data from the server');
+        }
+      } else {
+        // Handle error cases
+        console.error('Error updating user data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating user data:', error);
+    }
+  }
+};
+
+  const getMinDate = () => {
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setFullYear(today.getFullYear() - 120);
+    return minDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
   };
+  
+  const getMaxDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+};
+
+
 
   const handleChangePassword = (e) => {
     e.preventDefault();
     // Handle password change, e.g., send data to a server
   };
+
+  const formatDOB = (dob) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dob).toLocaleDateString(undefined, options);
+  };
+  
 
   return (
 
@@ -87,40 +153,40 @@ const Edit = ({ onBackToApp }) => {
 
       {/* Change Profile Photo */}
       <div>
-        <div class="col-xxl-4">
-          <div class="bg-secondary-soft px-4 py-5 rounded">
-            <div class="row g-3">
-              <h4 class="mb-4 mt-0">Upload your profile photo</h4>
-              <div class="text-center"></div>
+        <div className="col-xxl-4">
+          <div className="bg-secondary-soft px-4 py-5 rounded">
+            <div className="row g-3">
+              <h4 className="mb-4 mt-0">Upload your profile photo</h4>
+              <div className="text-center"></div>
 
-              <div class="square position-relative display-2 mb-3">
-                <img class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></img>
+              <div className="square position-relative display-2 mb-3">
+                <img className="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></img>
               </div>
               <input type="file" id="customFile" name="file" hidden=""></input>
-              <label class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" for="customFile">Upload</label>
-              <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Remove</button>
+              <button className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" htmlFor="customFile">Upload</button>
+              <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Remove</button>
 
             </div></div></div></div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form  className="space-y-4">
         {/* Change Cover Photo */}
         <div>
-          <div class="col-xxl-4">
-            <div class="bg-secondary-soft px-4 py-5 rounded">
-              <div class="row g-3">
-                <h4 class="mb-4 mt-0">Upload your Cover photo</h4>
-                <div class="text-center"></div>
+          <div className="col-xxl-4">
+            <div className="bg-secondary-soft px-4 py-5 rounded">
+              <div className="row g-3">
+                <h4 className="mb-4 mt-0">Upload your Cover photo</h4>
+                <div className="text-center"></div>
 
-                <div class="square position-relative display-2 mb-3">
-                  <img class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></img>
+                <div className="square position-relative display-2 mb-3">
+                  <img className="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></img>
                 </div>
                 <input type="file" id="customFile" name="file" hidden=""></input>
-                <label class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" for="customFile">Upload</label>
-                <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Remove</button>
+                <label className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" htmlFor="customFile">Upload</label>
+                <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Remove</button>
                     
                    </div></div></div></div>
 
-        <form onSubmit={handleSubmit} className="space-y-4"></form>
+      
         {/* Profile Information */}
         <div>
         <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
@@ -142,7 +208,7 @@ const Edit = ({ onBackToApp }) => {
           <input
             type="text"
             id="lastName"
-            name="LastName"
+            name="lastName"
             value={userData.lastName}
             onChange={handleChange}
             className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
@@ -156,7 +222,7 @@ const Edit = ({ onBackToApp }) => {
             type="text"
             id="about"
             name="about"
-            value={userData.about}
+            value={userData.additionalDetails ? userData.additionalDetails.about : ''}
             onChange={handleChange}
             className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
           />
@@ -167,13 +233,15 @@ const Edit = ({ onBackToApp }) => {
           </label>
           <input
             type="date"
-            id="dob"
-            name="DateOfBirth"
-            value={userData.dateOfbirth}
+            id="dateOfBirth"
+            name="dateOfBirth"
+            value={ userData.dateOfBirth }
             onChange={handleChange}
+            min={getMinDate()} // Set the minimum date dynamically
+            max={getMaxDate()} // Set the maximum date dynamically
             className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
           />
-        </div>
+</div>
 
         
         <div>
@@ -184,7 +252,7 @@ const Edit = ({ onBackToApp }) => {
             type="text"
             id="college"
             name="college"
-            value={userData.collegeName}
+            value=''
             onChange={handleChange}
             className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
           />
@@ -197,7 +265,7 @@ const Edit = ({ onBackToApp }) => {
             type="text"
             id="branch"
             name="branch"
-            value={userData.collegeBranch}
+            value=''
             onChange={handleChange}
             className="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring focus:ring-blue-200"
           />
@@ -252,6 +320,7 @@ const Edit = ({ onBackToApp }) => {
           <div>
             <button
               type="submit"
+              onClick={handleSubmit}
               className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none"
             >
               Save Changes
