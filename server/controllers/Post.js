@@ -153,6 +153,7 @@ exports.deletePost = async (req, res) => {
     const { postId } = req.body;
 
     const post = await Post.findById(postId);
+    console.log(postId, post);
 
     if (!post) {
       return res.status(404).json({
@@ -169,7 +170,8 @@ exports.deletePost = async (req, res) => {
     }
 
     for (let i = 0; i < post.tags.length; i++) {
-      const tag = await Tag.findOne({ name: post.tags[i] });
+      const tag = await Tag.findOne({ _id: post.tags[i] });
+      console.log(tag);
       tag.posts.pull(post._id);
       await tag.save();
     }
@@ -206,19 +208,18 @@ exports.deletePost = async (req, res) => {
 // ===============================================================================================================
 exports.getPostDetails = async (req, res) => {
   try {
-    const { postId } = req.body;
+    const postId = req.body.postId;
 
     const post = await Post.findById(postId)
       .populate("createdBy")
-      .populate("community")
       .populate("tags")
-      .populate("likes")
       .populate({
         path: "comments",
         populate: {
           path: "commentedBy",
         },
-      });
+      })
+      .populate("likes");
 
     if (!post) {
       return res.status(404).json({

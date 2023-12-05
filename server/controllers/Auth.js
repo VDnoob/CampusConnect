@@ -6,11 +6,13 @@ const bcrypt = require("bcrypt");
 const Profile = require("../models/Profile");
 const jwt = require("jsonwebtoken");
 const { passwordUpdated } = require("../utils/mailTemplates/passwordUpdated");
+const Community = require("../models/Community");
 require("dotenv").config();
 
 exports.sendOTP = async (req, res) => {
   try {
-    const { email } = req.body;
+    let { email } = req.body;
+    email = email.toLowerCase();
     const userAlreadyExists = await User.findOne({ email });
 
     if (userAlreadyExists) {
@@ -25,7 +27,6 @@ exports.sendOTP = async (req, res) => {
       upperCaseAlphabets: false,
       specialChars: false,
     });
-    console.log("OTP Generated : ", otp);
 
     let result = await OTP.findOne({ otp: otp });
     while (result) {
@@ -58,7 +59,7 @@ exports.sendOTP = async (req, res) => {
 
 exports.signup = async (req, res) => {
   try {
-    const {
+    let {
       firstName,
       lastName,
       email,
@@ -82,6 +83,7 @@ exports.signup = async (req, res) => {
         message: "All fields are required",
       });
     }
+    email = email.toLowerCase();
 
     if (password !== confirmPassword) {
       return res.status(400).json({
@@ -134,8 +136,18 @@ exports.signup = async (req, res) => {
       additionalDetails: profileDetails._id,
       profilePicture: `https://api.dicebear.com/7.x/initials/svg?seed=${firstName} ${lastName}`,
       coverPicture:
-        "http://myfbcovers.com/uploads/covers/2012/01/30/0038fcf02d8d012f4b5a00259003b428/watermarked_cover.png",
+        "https://images.pexels.com/photos/13095812/pexels-photo-13095812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     });
+
+    if (accountType !== "Admin") {
+      const gencom = await Community.findOne({ name: "General" });
+      gencom.members.push(user._id);
+      await gencom.save();
+      user.community.push(gencom._id);
+      await user.save();
+    }
+
+    await OTP.findByIdAndDelete(recentOTP[0]._id);
 
     return res.status(200).json({
       success: true,
@@ -153,7 +165,8 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    email = email.toLowerCase();
 
     if (!email || !password) {
       return res.status(403).json({
@@ -207,7 +220,7 @@ exports.login = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    const { email, oldPassword, newPassword, confirmNewPassword } = req.body;
+    let { email, oldPassword, newPassword, confirmNewPassword } = req.body;
 
     if (!email || !oldPassword || !newPassword || !confirmNewPassword) {
       return res.status(403).json({
@@ -215,6 +228,9 @@ exports.changePassword = async (req, res) => {
         message: "All the fields are required",
       });
     }
+
+    email = email.toLowerCase();
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({

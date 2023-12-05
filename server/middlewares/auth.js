@@ -6,7 +6,7 @@ exports.auth = async (req, res, next) => {
   try {
     let token = req.body.token || req.cookies.token;
 
-    if (!token && req.header("Authorization")) {
+    if (req.header("Authorization")) {
       token = req.header("Authorization").replace("Bearer ", "");
     }
 
