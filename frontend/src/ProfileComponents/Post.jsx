@@ -54,20 +54,6 @@ export default function Post({
     const token = localStorage.getItem("Token");
     console.log(id);
     try {
-<<<<<<< Updated upstream
-      const response = await fetch('https://campusconnectbackend.onrender.com/api/v1/post/delete', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token,
-          // Add any headers or authentication tokens as needed
-        },
-        body: JSON.stringify({
-          postId: id,
-        }), // Sending the post ID to delete
-      });
-      console.log(response);
-=======
       const response = await fetch(
         "https://campusconnectbackend.onrender.com/api/v1/post/delete",
         {
@@ -83,7 +69,6 @@ export default function Post({
         }
       );
       console.log(response.json());
->>>>>>> Stashed changes
       if (!response.ok) {
         throw new Error("Failed to delete post");
       }
@@ -112,10 +97,10 @@ export default function Post({
           </div>
           {tags
             ? tags.map((tag, index) => (
-                <span key={index} className="post__tag">
-                  {tag ? tag.name : null}
-                </span>
-              ))
+              <span key={index} className="post__tag">
+                {tag ? tag.name : null}
+              </span>
+            ))
             : null}
           <div className="doubts_info">
             {doubts ? (
@@ -152,17 +137,12 @@ export default function Post({
         </div>
 
         <div className="flex justify-evenly">
-<<<<<<< Updated upstream
-          <div className='likeButton' onClick={changeLikeButton}>
-            <InputOption Icon={liked ? ThumbUpIcon : ThumbUpAltOutlinedIcon} title={'Like'} color={likeColor} />
-=======
           <div className="likeButton" onClick={changeLikeButton}>
             <InputOption
               Icon={liked ? ThumbUpIcon : ThumbUpAltOutlinedIcon}
               title={"Like"}
               color={likeColor}
             />
->>>>>>> Stashed changes
           </div>
           <InputOption Icon={SmsRoundedIcon} title="Comment" color="gray" />
         </div>

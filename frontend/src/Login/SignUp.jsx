@@ -100,13 +100,14 @@ function SignUpForm() {
             alert("Password should not exceed 15 characters");
             return;
         }
+        const accountType = value.charAt(0).toUpperCase() + value.slice(1);
         const signupData = {
             firstName,
             lastName,
             email,
             password,
             confirmPassword,
-            accountType: value,
+            accountType,
         };
         localStorage.setItem('signupData', JSON.stringify(signupData));
 

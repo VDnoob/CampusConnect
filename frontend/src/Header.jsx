@@ -1,20 +1,34 @@
-import React from "react";
-import "./Header.css";
-import SearchIcon from "@mui/icons-material/Search";
-import HeaderOption from "./HeaderOption";
-import HomeIcon from "@mui/icons-material/Home";
-import GroupsIcon from "@mui/icons-material/Groups";
-import ChatIcon from "@mui/icons-material/Chat";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Avatar } from "@mui/material";
+import { React, useState } from 'react'
+import './Header.css'
+import SearchIcon from '@mui/icons-material/Search';
+import HeaderOption from './HeaderOption';
+import HomeIcon from '@mui/icons-material/Home';
+import GroupsIcon from '@mui/icons-material/Groups';
+import ChatIcon from '@mui/icons-material/Chat';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Avatar, Menu, MenuItem, IconButton } from '@mui/material';
 import logo from "./img.jpg";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import header_img from "./header_pfp.png";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 function Header() {
   const profilePicture = localStorage.getItem("ProfilePicture");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogOut = () => {
+    // Add your update logic here
+    navigate('../');
+  };
   return (
     <div className="header">
       <div className="header__left">
@@ -49,16 +63,38 @@ function Header() {
           </Link>
         </div>
 
-        {/* <div className="header__right__menu__container">
-          {/* <HeaderOption Icon={MoreVertIcon} title="Me"/>
-          <div className='dropdown-menu'>
-            <ul>
-              <DropDownItem menuItem={"Log Out"}/>
-            </ul>
-          </div>
-        </div> */}
+        <div className='menu__options'>
+          <IconButton
+            aria-controls="post-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+            className='post__moreIcon'
+            style={{ marginLeft: '20' }}
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            id="post-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
+          </Menu>
+        </div>
       </div>
     </div>
+  );
+}
+
+function DropDownItem({ menuItem }) {
+  return (
+    <li className="dropDownItem">
+      <ExitToAppIcon className="exit__icon" />
+      <a href="#" className="menuItem">
+        {menuItem}
+      </a>
+    </li>
   );
 }
 
