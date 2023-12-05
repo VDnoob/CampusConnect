@@ -1,41 +1,60 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import SearchIcon from '@mui/icons-material/Search';
-import CreateCommunity from '../CommunityComponents/communities/CreateCommunity';
-
-const sampleOptions = [
-  'Computer Science',
-  'Electrical Engineering',
-  'Mechanical Engineering',
-  'Business Administration',
-  'Psychology',
-  'Mathematics',
-  'Biology',
-  'Chemistry',
-  'Physics',
-  'Sociology',
-];
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import CreateCommunity from "../CommunityComponents/communities/CreateCommunity";
 
 function Search({ onSearch, onCancel }) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOption, setSelectedOption] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
   const [showOptions, setShowOptions] = useState(false);
+  const [communityOptions, setCommunityOptions] = useState([]);
+  const navigate = useNavigate();
 
-  const filteredOptions = sampleOptions.filter(
+  useEffect(() => {
+    const token = localStorage.getItem("Token");
+    const fetchCommunityList = async () => {
+      try {
+        const response = await fetch(
+          "https://campusconnectbackend.onrender.com/api/v1/community/getAllCommunities",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          setCommunityOptions(data.data.map((community) => community.name));
+        } else {
+          console.error(data.message);
+        }
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetchCommunityList();
+  }, []);
+
+  const filteredOptions = communityOptions.filter(
     (option) =>
       option.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      searchTerm.trim() !== ''
+      searchTerm.trim() !== ""
   );
 
   const handleSelectOption = (option) => {
     setSelectedOption(option);
     setSearchTerm(option);
     setShowOptions(false);
-  };
+    navigate(`/Community/CommunityProfile/${option}`);
+    };
 
   const handleRemoveOption = () => {
-    setSearchTerm('');
-    setSelectedOption('');
+    setSearchTerm("");
+    setSelectedOption("");
   };
 
   const handleSearch = () => {
@@ -59,10 +78,9 @@ function Search({ onSearch, onCancel }) {
         <SearchIcon className="pl-[2px]" />
         <TextField
           type="search"
-          className="block w-full text-sm rounded-lg bg-gray-50"
+          className="block w-full p-4 pl-10 text-sm rounded-lg bg-gray-50"
           placeholder="Search Community"
           value={searchTerm}
-          size='small'
           onChange={(e) => {
             setSearchTerm(e.target.value);
             setShowOptions(true);
@@ -71,7 +89,7 @@ function Search({ onSearch, onCancel }) {
         <button
           type="button"
           onClick={onSearch ? null : handleSearch}
-          className="text-white bg-blue-700 hover:bg-blue-500 font-medium rounded-lg text-sm ml-2 px-4 py-2"
+          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2"
         >
           Search
         </button>
@@ -95,27 +113,27 @@ function Search({ onSearch, onCancel }) {
 
 export default function CombinedComponent() {
   const [showCreateCommunityForm, setShowCreateCommunityForm] = useState(false);
-  const [activeTab, setActiveTab] = useState('join'); // 'join' or 'create'
+  const [activeTab, setActiveTab] = useState("join"); // 'join' or 'create'
 
   const handleCreateCommunityClick = () => {
     setShowCreateCommunityForm(true);
-    setActiveTab('join'); // Switch to the 'Join Community' tab
+    setActiveTab("join"); // Switch to the 'Join Community' tab
   };
 
   const handleCancelCreateCommunity = () => {
     setShowCreateCommunityForm(false);
-    setActiveTab('join'); // Switch to the 'Join Community' tab
+    setActiveTab("join"); // Switch to the 'Join Community' tab
   };
 
   const handleCreateCommunity = () => {
     // console.log(Creating community);
     setShowCreateCommunityForm(false);
-    setActiveTab('join'); // Switch to the 'Join Community' tab
+    setActiveTab("join"); // Switch to the 'Join Community' tab
   };
 
   return (
     <div>
-      {!showCreateCommunityForm && activeTab === 'join' && (
+      {!showCreateCommunityForm && activeTab === "join" && (
         <React.Fragment>
           <Search onSearch={handleCreateCommunityClick} />
           <button
