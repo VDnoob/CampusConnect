@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 // import viteLogo from '/vite.svg'
 // import './App.css';
 import CreatePost from './CreatePost';
-import Messages from './Messages.jsx';
+// import Messages from './Messages.jsx';
 
 // import PostPage from './PostPage';
 import Home from './Home.jsx';
@@ -26,11 +26,11 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/CreatePost" element={<CreatePost />} />
         <Route path="/Profile" element={<Profile />} />
-        <Route path="/Community/*" element={<Community />} /> 
+        <Route path="/Community/*" element={<Community />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/CommentPage" element={<CommentPage />} />
-        <Route path="/Messages" element={<Messages />} />
-        <Route path="/ContactUs" element={<ContactUs />} /> 
+        {/* <Route path="/Messages" element={<Messages />} /> */}
+        <Route path="/ContactUs" element={<ContactUs />} />
       </Routes>
     </Router>
   )
