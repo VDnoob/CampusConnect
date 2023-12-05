@@ -5,6 +5,7 @@ const uploadToCloudinary = require("../utils/uploadToCloudinary");
 const Comment = require("../models/Comment");
 const Answer = require("../models/Answer");
 const Post = require("../models/Post");
+const Doubt = require("../models/Doubt");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -22,8 +23,8 @@ exports.updateProfile = async (req, res) => {
     const userDetails = await User.findById(id);
     const profile = await Profile.findById(userDetails.additionalDetails);
 
-    if (firstName) profile.firstName = firstName;
-    if (lastName) profile.lastName = lastName;
+    if (firstName) userDetails.firstName = firstName;
+    if (lastName) userDetails.lastName = lastName;
     await userDetails.save();
 
     profile.dateOfBirth = dateOfBirth;
@@ -206,7 +207,7 @@ exports.getUserPost = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "User Data fetched successfully",
-      data: user,
+      data: posts,
     });
   } catch (error) {
     return res.status(500).json({
@@ -228,10 +229,18 @@ exports.getUserDoubts = async (req, res) => {
       });
     }
 
+    const doubt = await Doubt.find({ createdBy: id })
+      .populate("createdBy")
+      .populate("answers")
+      .populate("likes")
+      .populate("tags")
+      .populate("community")
+      .exec();
+
     res.status(200).json({
       success: true,
       message: "User Data fetched successfully",
-      data: user,
+      data: doubt,
     });
   } catch (error) {
     return res.status(500).json({

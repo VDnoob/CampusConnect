@@ -7,7 +7,7 @@ const uploadToCloudinary = require("../utils/uploadToCloudinary");
 
 exports.createCommunity = async (req, res) => {
   try {
-    const { name, tags, description } = req.body;
+    let { name, tags, description } = req.body;
     let createdBy = req.user.id;
 
     if (!name || !createdBy) {
@@ -24,16 +24,6 @@ exports.createCommunity = async (req, res) => {
       });
     }
 
-    let tagsId = [];
-
-    tags.forEach(async (tagName) => {
-      const tag = await Tag.findOne({ name: tagName });
-      if (!tag) {
-        const newTag = await Tag.create({ name: tagName });
-      }
-      tagsId.push(tag._id);
-    });
-
     createdBy = await User.findById(createdBy);
     if (!createdBy) {
       return res.status(404).json({
@@ -42,20 +32,54 @@ exports.createCommunity = async (req, res) => {
       });
     }
 
+    let tagsId = [];
+
+    if (tags) {
+      tags = tags.split(",");
+      for (let i = 0; i < tags.length; i++) {
+        const tag = await Tag.findOne({ name: tags[i] });
+        if (!tag) {
+          const newTag = await Tag.create({ name: tags[i] });
+          tagsId.push(newTag._id);
+        } else {
+          tagsId.push(tag._id);
+        }
+      }
+    }
+
     const tagsinDB = await Tag.find({ _id: { $in: tagsId } });
 
-    const community = await Community.create({
+    let community = await Community.create({
       name,
       createdBy,
       tags: tagsinDB,
       description,
     });
 
-    tags.forEach(async (tagName) => {
-      const tag = await Tag.findOne({ name: tagName });
-      tag.communities.push(community);
-      await tag.save();
-    });
+    if (tags) {
+      for (let i = 0; i < tags.length; i++) {
+        const tag = await Tag.findOne({ name: tags[i] });
+        tag.communities.push(community._id);
+        await tag.save();
+      }
+    }
+
+    if (req.files && req.files.picture) {
+      const pictureUrl = await uploadToCloudinary(req.files.picture);
+      community.picture = pictureUrl.secure_url;
+    }
+
+    if (req.files && req.files.coverPage) {
+      const coverPageUrl = await uploadToCloudinary(req.files.coverPage);
+      community.coverPage = coverPageUrl.secure_url;
+    }
+
+    community.members.push(createdBy);
+    await community.save();
+
+    createdBy.community.push(community._id);
+    await createdBy.save();
+
     res.status(200).json({
       success: true,
       message: "Community created successfully",
@@ -676,7 +700,7 @@ exports.getCommunityDoubts = async (req, res) => {
     const doubts = await Doubt.find({ community: community._id })
       .populate("createdBy")
       .populate("tags")
-      .populate("comments");
+      .populate("answers");
 
     res.status(200).json({
       success: true,
