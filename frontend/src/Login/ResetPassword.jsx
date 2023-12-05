@@ -18,7 +18,11 @@ const ResetPassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{5,}$/;
+        if (!passwordRegex.test(newPassword)) {
+            alert("Password should start with a capital letter and include a special character");
+            return;
+        }
         try {
             const response = await fetch("https://campusconnectbackend.onrender.com/api/v1/auth/reset-password", {
                 method: "POST",
@@ -46,7 +50,7 @@ const ResetPassword = () => {
                     Navigate("../");
                 }
             } else {
-                setMessage("Error resetting password");
+                setMessage(`${result.message}`);
             }
         } catch (error) {
             console.error("Error:", error);

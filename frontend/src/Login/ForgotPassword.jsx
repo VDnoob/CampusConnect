@@ -11,6 +11,7 @@ const ForgotPassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         // Add your logic for handling the forgot password functionality here
         // For example, you might send a reset password email to the entered email address.
         // Display a success or error message accordingly.
@@ -38,7 +39,7 @@ const ForgotPassword = () => {
                     Navigate("../");
                 }
             } else {
-                setMessage("Error reseting");
+                setMessage(`${result.message}`);
             }
         } catch (error) {
             console.error("Error:", error);

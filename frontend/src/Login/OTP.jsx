@@ -85,7 +85,7 @@ const OTPPage = () => {
                 setMessage('Signup successful');
                 // Redirect or perform other actions
             } else {
-                setMessage(result.message);
+                setMessage(`${result.message}`);
             }
         } catch (error) {
             setMessage('Error verifying OTP or signing up');

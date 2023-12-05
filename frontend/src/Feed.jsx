@@ -127,29 +127,30 @@ function Feed() {
           color={post.likes.includes(localStorage.getItem("userId")) ? '#3480cd' : 'gray'}
           id={post._id}
           profilePicture={post.createdBy.profilePicture}
-          />
+          accountType={post.createdBy.accountType}
+        />
       ))}
       {doubts
         ? doubts.map((doubts) => (
-            <Post
-              key={doubts._id}
-              name={
-                doubts.createdBy.firstName + " " + doubts.createdBy.lastName
-              }
-              description={
-                doubts.community ? doubts.community.name : "Deleted Community"
-              }
-              tags={doubts.tags}
-              doubts={true}
-              message={doubts.content}
-              photoUrl={doubts.fileUrl}
-              numLikes={doubts.likes.length}
-              liked__alr={doubts.likes.includes(localStorage.getItem("userId")) ? true : false}
-              color={doubts.likes.includes(localStorage.getItem("userId")) ? '#3480cd' : 'gray'}
-              id={doubts._id}
-              profilePicture={doubts.createdBy.profilePicture} // Assuming the field is named photoUrl
-            />
-          ))
+          <Post
+            key={doubts._id}
+            name={
+              doubts.createdBy.firstName + " " + doubts.createdBy.lastName
+            }
+            description={
+              doubts.community ? doubts.community.name : "Deleted Community"
+            }
+            tags={doubts.tags}
+            doubts={true}
+            message={doubts.content}
+            photoUrl={doubts.fileUrl}
+            numLikes={doubts.likes.length}
+            liked__alr={doubts.likes.includes(localStorage.getItem("userId")) ? true : false}
+            color={doubts.likes.includes(localStorage.getItem("userId")) ? '#3480cd' : 'gray'}
+            id={doubts._id}
+            profilePicture={doubts.createdBy.profilePicture} // Assuming the field is named photoUrl
+          />
+        ))
         : null}
       {/* <Post
         name="Jeel Viradiya"
@@ -181,6 +182,6 @@ function Feed() {
 // numLikes={post.likes}
 // liked__alr={post.likes.includes(req.user.id) ? true : false}
 // color={post.likes.includes(req.user.id) ? '#3480cd' : 'gray'} // Assuming the field is named photoUrl
-       
+
 
 export default Feed;

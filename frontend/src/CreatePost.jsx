@@ -3,10 +3,12 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { convert } from 'html-to-text';
 import "./CreatePost.css";
+import { useNavigate } from 'react-router-dom';
 import 'tailwindcss/tailwind.css'; // Import Tailwind CSS
 import { TextField, Autocomplete, Switch, FormControlLabel } from '@mui/material';
 
 const CreatePost = () => {
+    const navigate = useNavigate();
     const [content2, setContent] = useState('');
     const [tags, setTags] = useState('');
     const [isDoubt, setIsDoubt] = useState(false);
@@ -43,6 +45,8 @@ const CreatePost = () => {
 
         fetchCommunityList();
     }, []);
+
+
 
     const dataURLtoFile = (dataURL) => {
         const arr = dataURL.split(',');
@@ -94,7 +98,7 @@ const CreatePost = () => {
             const tagArray = tags.split(',').map(tag => tag.trim().replace(/[^a-zA-Z0-9 ]/g, ''));
             // const tagsJsonString = JSON.stringify(tagArray);
             const tagsString = tagArray.join(',');
-            console.log(tagsString);
+            // console.log(tagsString);
             // Check if tags input contains a comma
             // if (tags.includes(',')) {
             //     tagArray = tags.split(',').map(tag => tag.trim());
@@ -138,6 +142,9 @@ const CreatePost = () => {
         } catch (error) {
             console.error(`Error creating ${isDoubt ? 'doubt' : 'post'}:`, error);
         }
+    };
+    const handleCancel = () => {
+        navigate('../Home');
     };
 
     return (
@@ -211,6 +218,7 @@ const CreatePost = () => {
                     </div>
 
                     <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded transition duration-300 hover:bg-blue-700 hover:text-gray-100">Post</button>
+                    <button type="button" className="ml-2 bg-gray-300 text-gray-700 px-4 py-2 rounded transition duration-300 hover:bg-gray-400" onClick={handleCancel}>Cancel</button>
                 </form>
             </div>
         </div>

@@ -11,8 +11,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 // import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import Typography from "@mui/material/Typography";
 import header_img from "./header_pfp.png";
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 
-function Post({ name, description, message, photoUrl, tags, numLikes, liked__alr, color, id, doubts, profilePicture}) {
+function Post({ name, description, message, photoUrl, tags, numLikes, liked__alr, color, id, doubts, profilePicture, accountType }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [liked, setLiked] = useState(liked__alr);
   const [numOfLikes, setNumOfLikes] = useState(numLikes);
@@ -20,7 +21,7 @@ function Post({ name, description, message, photoUrl, tags, numLikes, liked__alr
   const [isEditing, setIsEditing] = useState(false);
   const [postMessage, setPostMessage] = useState(message);
   const [updatedMessage, setUpdatedMessage] = useState(message);
-  const [postDetails , setPostDetails] = useState([]);
+  const [postDetails, setPostDetails] = useState([]);
   const token = localStorage.getItem("Token");
   const userId = localStorage.getItem("userId");
 
@@ -52,17 +53,17 @@ function Post({ name, description, message, photoUrl, tags, numLikes, liked__alr
       }
     };
 
-  fetchPostDetails();
+    fetchPostDetails();
   }, []);
-  
-  for(let i=0;i< postDetails.likes; i++){
-     if(postDetails.likes[i].user === localStorage.getItem("userId")){
-       setLiked(true);
-       setLikeColor('#3480cd');
-     }
+
+  for (let i = 0; i < postDetails.likes; i++) {
+    if (postDetails.likes[i].user === localStorage.getItem("userId")) {
+      setLiked(true);
+      setLikeColor('#3480cd');
+    }
   }
 
-  const changeLikeButton =  () => {
+  const changeLikeButton = () => {
     if (liked) {
       setNumOfLikes(numOfLikes - 1);
       setLiked(false);
@@ -123,16 +124,20 @@ function Post({ name, description, message, photoUrl, tags, numLikes, liked__alr
         <Avatar src={profilePicture} className="post__avatar" />
         <div className="post__info">
           <h2>{name}</h2>
+
           <div className='post__info__desc'>
             <p className='post__info__desc'>/{description}</p>
           </div>
         </div>
+        <div>
+          {accountType == 'Professor' ? <PersonOutlinedIcon fontSize="small" /> : null}
+        </div>
         {tags
           ? tags.map((tag, index) => (
-              <span key={index} className="post__tag">
-                {tag ? tag.name : null}
-              </span>
-            ))
+            <span key={index} className="post__tag">
+              {tag ? tag.name : null}
+            </span>
+          ))
           : null}
         {/* <p className='post__info__desc'>/{description}</p> */}
         {/* Add the dropdown button */}
