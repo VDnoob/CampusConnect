@@ -126,14 +126,17 @@ const CreatePost = () => {
             });
 
             console.log(response);
-
+            const responseData = await response.json();
             if (!response.ok) {
                 throw new Error(`Failed to ${isDoubt ? 'create doubt' : 'create post'}`);
             }
+            else if (response.success) {
+                alert(`${responseData.message}`);
+            }
 
             // Optionally, handle the success response
-            const responseData = await response.json();
-            console.log(`${isDoubt ? 'Doubt' : 'Post'} created successfully:`, responseData);
+
+            alert(`${isDoubt ? 'Doubt' : 'Post'} created successfully:`);
 
             // Clear form fields after successful submission
             setContent('');
