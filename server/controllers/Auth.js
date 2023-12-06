@@ -220,18 +220,17 @@ exports.login = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    let { email, oldPassword, newPassword, confirmNewPassword } = req.body;
+    let { oldPassword, newPassword, confirmNewPassword } = req.body;
+    let userid = req.user.id;
 
-    if (!email || !oldPassword || !newPassword || !confirmNewPassword) {
+    if (!oldPassword || !newPassword || !confirmNewPassword) {
       return res.status(403).json({
         success: false,
         message: "All the fields are required",
       });
     }
 
-    email = email.toLowerCase();
-
-    const user = await User.findOne({ email });
+    const user = await User.findById(userid);
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -250,16 +249,16 @@ exports.changePassword = async (req, res) => {
       }
       const hashedNewPassword = await bcrypt.hash(newPassword, 10);
       const updateduser = await User.findOneAndUpdate(
-        { email },
+        { _id: userid },
         { password: hashedNewPassword },
         { new: true }
       );
 
       try {
         const emailRspomse = mailSender(
-          email,
+          user.email,
           `Password Updated Succesfully for StudyNotion`,
-          passwordUpdated(email, updateduser.firstName)
+          passwordUpdated(user.email, updateduser.firstName)
         );
       } catch (error) {
         console.error(error);

@@ -31,7 +31,7 @@ exports.resetPasswordToken = async (req, res) => {
       },
       { new: true }
     );
-    const url = `http://localhost:5174/reset-password/${token}`;
+    const url = `https://campusconnect313.netlify.app/reset-password/${token}`;
     await mailSender(
       email,
       "Password Reset Link",
